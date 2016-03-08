@@ -55,12 +55,11 @@ public class Booter {
         } catch (JoranException e) {
             e.printStackTrace();
         }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
         Logger logger = LoggerFactory.getLogger(Booter.class);
         //准备已访问列表
         SystemCache.setCache(new CacheEle<Map<String, Map<String, String>>>(CrawlerConstants.MAP_VISITEDPAGE, "已访问页面", new HashMap<String, Map<String, String>>()));
         //用SystemCache实现对工程上下文信息的存储
-        //SpringShell.init();
+        SpringShell.init();
         //开始喜马拉雅的爬取
         //Crawling.start("喜马拉雅", "conf/XMLY.properties");
         //开始蜻蜓的爬取
