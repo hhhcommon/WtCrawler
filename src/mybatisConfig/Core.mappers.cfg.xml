@@ -8,6 +8,7 @@
     <typeAlias alias="dictDetail" type="com.woting.crawler.core.persis.po.DictDetailPo"/>
   </typeAliases>
   <mappers>
+    <mapper resource="com/woting/crawler/core/persis/sql/Scheme.mapper.xml"/>
     <mapper resource="com/woting/crawler/core/persis/sql/DictMaster.mapper.xml"/>
     <mapper resource="com/woting/crawler/core/persis/sql/DictDetail.mapper.xml"/>
   </mappers>

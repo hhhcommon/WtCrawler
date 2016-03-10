@@ -8,16 +8,16 @@ import org.slf4j.LoggerFactory;
 
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
-import com.woting.crawler.core.scheme.Crawling;
+import com.woting.crawler.CrawlerConstants;
 import com.woting.crawler.ext.SpringShell;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 
 public class Booter {
     public static void main(String[] args) throws Exception {
+        long beginTime=System.currentTimeMillis();
         //获取运行路径
         String rootPath=Booter.class.getResource("").getPath();
         if (rootPath.indexOf("!")!=-1) {//jar包
@@ -42,6 +42,7 @@ public class Booter {
         if (os.toLowerCase().startsWith("linux")||os.toLowerCase().startsWith("unix")||os.toLowerCase().startsWith("aix")) rootPath+="/";
         else if (os.toLowerCase().startsWith("window")&&rootPath.startsWith("/")) rootPath=rootPath.substring(1);
         SystemCache.setCache(new CacheEle<String>(CrawlerConstants.APP_PATH, "系统运行的路径", rootPath));
+
         //logback加载xml内容
         LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
         JoranConfigurator configurator = new JoranConfigurator();
@@ -55,13 +56,18 @@ public class Booter {
         } catch (JoranException e) {
             e.printStackTrace();
         }
+
         Logger logger = LoggerFactory.getLogger(Booter.class);
-        //准备已访问列表
+        logger.info("内容抓取，环境初始化开始");
+        logger.info("系统运行路径 [{}]", (SystemCache.getCache(CrawlerConstants.APP_PATH)).getContent());
+
+        //准备已访问列表，用SystemCache实现对工程上下文信息的存储
         SystemCache.setCache(new CacheEle<Map<String, Map<String, String>>>(CrawlerConstants.MAP_VISITEDPAGE, "已访问页面", new HashMap<String, Map<String, String>>()));
-        //用SystemCache实现对工程上下文信息的存储
+
+        //Spring环境加载
+        long beginSpring=System.currentTimeMillis();
         SpringShell.init();
-        //开始喜马拉雅的爬取
-        //Crawling.start("喜马拉雅", "conf/XMLY.properties");
-        //开始蜻蜓的爬取
+        logger.info("加载Spring配置，用时[{}]毫秒", System.currentTimeMillis()-beginSpring);
+        logger.info("内容抓取，环境初始化结束，共用时[{}]毫秒", System.currentTimeMillis()-beginTime);
     }
 }

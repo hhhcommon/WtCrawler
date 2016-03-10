@@ -37,7 +37,6 @@ public class ControllerShell<C extends WebCrawler> {
         controller = new CrawlController(config, pageFetcher, new RobotstxtServer(new RobotstxtConfig(), pageFetcher));
         for (String url: urlSeeds) controller.addSeed(url);
         controller.start(this.crawler.getClass(), this.threadNum);
-//        controller.start(com.woting.crawler.scheme.XMLY.Crawler.class, this.threadNum);
         while (!controller.isFinished()){};//这是个死循环，等待
 
         long endTime=System.currentTimeMillis();

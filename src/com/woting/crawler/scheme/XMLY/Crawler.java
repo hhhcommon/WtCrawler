@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -17,6 +19,7 @@ import com.woting.crawler.ext.SpringShell;
 import com.woting.crawler.service.TestService;
 
 public class Crawler extends WebCrawler {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * 网页是否需要被访问
      */
@@ -34,9 +37,11 @@ public class Crawler extends WebCrawler {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
-        //打出记录先看看
+        String href = page.getWebURL().getURL().toLowerCase();
+        logger.info("分析网页：{}", href);
+        
         //保存文件先看看
-        String fileName="/opt/fetchStore/xmly/pagestore"+page.getWebURL().toString().substring("http://www.ximalaya.com".length());
+        String fileName="/opt/fetchStore/xmly/pagestore"+href.substring("http://www.ximalaya.com".length());
         if (fileName.endsWith("/")) fileName=fileName.substring(0, fileName.length()-1);
         fileName+=".html";
         try {
@@ -44,12 +49,14 @@ public class Crawler extends WebCrawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Map<String, Object> d=new HashMap<String, Object>();
-        String href = page.getWebURL().getURL().toLowerCase();
-        d.put("ParentURL", ParseUtils.getType(href)+"");
-        d.put("Type", page.getWebURL().getParentUrl());
-        d.put("URL", href);
-        d.put("Time", new Timestamp(System.currentTimeMillis()));
-        ((TestService)SpringShell.getBean("testService")).insertTest(d);
+        
+//        Map<String, Object> d=new HashMap<String, Object>();
+//        d.put("ParentURL", ParseUtils.getType(href)+"");
+//        d.put("Type", page.getWebURL().getParentUrl());
+//        d.put("URL", href);
+//        d.put("Time", new Timestamp(System.currentTimeMillis()));
+//        ((TestService)SpringShell.getBean("testService")).insertTest(d);
     }
+
+    
 }
