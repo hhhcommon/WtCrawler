@@ -1,12 +1,16 @@
-package com.woting.crawler.core.scheme.persis.pojo;
+package com.woting.crawler.core.scheme.persis.po;
 
 import java.sql.Timestamp;
+
+import com.spiritdata.framework.core.model.BaseObject;
 
 /**
  * 抓取模式的Po对象，与数据库表wt_c_Scheme字段一一对应
  * @author wanghui
  */
-public class SchemePo {
+public class SchemePo extends BaseObject {
+    private static final long serialVersionUID = -673004352123772483L;
+
     private String id;//抓取模版Id
     private String sourceId;//抓取源Id
 

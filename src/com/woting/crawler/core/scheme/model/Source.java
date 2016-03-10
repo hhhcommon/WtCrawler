@@ -8,7 +8,7 @@ import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.crawler.core.scheme.persis.pojo.SourcePo;
+import com.woting.crawler.core.scheme.persis.po.SourcePo;
 
 /**
  * 内容源

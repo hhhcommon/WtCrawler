@@ -1,12 +1,16 @@
-package com.woting.crawler.core.scheme.persis.pojo;
+package com.woting.crawler.core.scheme.persis.po;
 
 import java.sql.Timestamp;
+
+import com.spiritdata.framework.core.model.BaseObject;
 
 /**
  * 抓取批次的Po对象，与数据库表wt_c_Batch字段一一对应
  * @author wanghui
  */
-public class CrawlBatchPo {
+public class CrawlBatchPo extends BaseObject {
+    private static final long serialVersionUID = -7795359226411975864L;
+
     private String schemeId; //方案Id
     private int schemeNum; //该方案下的序号
     private Timestamp beginTime; //方案执行开始时间

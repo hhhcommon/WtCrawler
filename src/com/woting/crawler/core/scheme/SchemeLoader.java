@@ -23,12 +23,11 @@ public class SchemeLoader {
      * 加载并运行抓取模式
      */
     public void load_run() {
-        
         if (loadType==1) { //数据库方式
             //读取列表
         }
     }
-    
+
     //开始喜马拉雅的爬取
     //Crawling.start("喜马拉雅", "conf/XMLY.properties");
     //开始蜻蜓的爬取

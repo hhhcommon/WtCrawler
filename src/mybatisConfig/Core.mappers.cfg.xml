@@ -6,6 +6,9 @@
   <typeAliases>
     <typeAlias alias="dictMaster" type="com.woting.crawler.core.persis.po.DictMasterPo"/>
     <typeAlias alias="dictDetail" type="com.woting.crawler.core.persis.po.DictDetailPo"/>
+    <typeAlias alias="source" type="com.woting.crawler.core.scheme.persis.po.SourcePo"/>
+    <typeAlias alias="scheme" type="com.woting.crawler.core.scheme.persis.po.SchemePo"/>
+    <typeAlias alias="batch" type="com.woting.crawler.core.scheme.persis.po.CrawlBatchPo"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/woting/crawler/core/persis/sql/Scheme.mapper.xml"/>

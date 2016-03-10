@@ -1,12 +1,16 @@
-package com.woting.crawler.core.scheme.persis.pojo;
+package com.woting.crawler.core.scheme.persis.po;
 
 import java.sql.Timestamp;
+
+import com.spiritdata.framework.core.model.BaseObject;
 
 /**
  * 内容源网站信息的Po对象，与数据库表wt_c_Source字段一一对应
  * @author wanghui
  */
-public class SourcePo {
+public class SourcePo extends BaseObject {
+    private static final long serialVersionUID = -7411847416587862271L;
+
     private String id;//内容源id
     private String sourceName; //内容源名称
     private String sourceWeb; //主站站点URL，用空格隔开
