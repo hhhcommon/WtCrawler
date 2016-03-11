@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.woting.crawler.CrawlerConstants;
+import com.woting.crawler.core.control.MainController;
 import com.woting.crawler.ext.SpringShell;
 
 import ch.qos.logback.classic.LoggerContext;
@@ -75,5 +76,9 @@ public class Booter {
 //        //开始喜马拉雅的爬取
 //        //Crawling.start("喜马拉雅", "conf/XMLY.properties");
 //        //开始蜻蜓的爬取
+        //开始运行
+        MainController mc= new MainController();
+        mc.loadScheme(1, null);
+        mc.runningScheme();
     }
 }
