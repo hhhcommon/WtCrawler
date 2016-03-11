@@ -47,6 +47,8 @@
   </resultMap>
 
   <select id="getActiveSchemes" resultMap="schemeMap">
+  <![CDATA[
     select * from wt_c_Scheme where isValidate=1 and (crawlType=0 or (crawlType>processNum))
+  ]]>
   </select>
 </mapper>

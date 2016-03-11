@@ -1,5 +1,6 @@
 package com.woting.crawler.core.control;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class MainController {
      * @param schemeFiles 若是文件方式，这里是
      */
     public void loadScheme(int loadType, String[] schemeFiles) {
+        this.activeSchemes=new ArrayList<Scheme>();
         logger.info("加载模式<{}>", activeSchemes.size());
         if (loadType==1) { //数据库方式
             SchemeService ss = (SchemeService)SpringShell.getBean("schemeService");
