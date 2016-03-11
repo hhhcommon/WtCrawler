@@ -3,7 +3,50 @@
 <!-- 抓取模型处理 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="C_SCHEME">
-  <select id="getActiveScheme" resultType="java.util.HashMap">
+  <!-- 抓取网络源 -->
+  <resultMap id="sourceMap" type="source">
+    <id      column="id"          property="id"          jdbcType="VARCHAR"/>
+    <result  column="sourceName"  property="sourceName"  jdbcType="VARCHAR"/>
+    <result  column="sourceWeb"   property="sourceWeb"   jdbcType="VARCHAR"/>
+    <result  column="cTime"       property="CTime"       jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <!-- 抓取方案 -->
+  <resultMap id="schemeMap" type="scheme">
+    <id      column="id"             property="id"             jdbcType="VARCHAR"/>
+    <result  column="sourceId"       property="sourceId"       jdbcType="VARCHAR"/>
+    <result  column="schemeType"     property="schemeType"     jdbcType="INTEGER"/>
+    <result  column="fileUrls"       property="fileUrls"       jdbcType="VARCHAR"/>
+    <result  column="isValidate"     property="isValidate"     jdbcType="INTEGER"/>
+    <result  column="schemeName"     property="schemeName"     jdbcType="VARCHAR"/>
+    <result  column="schemeDescn"    property="schemeDescn"    jdbcType="VARCHAR"/>
+    <result  column="crawlType"      property="crawlType"      jdbcType="INTEGER"/>
+    <result  column="processNum"     property="processNum"     jdbcType="INTEGER"/>
+    <result  column="intervalTime"   property="intervalTime"   jdbcType="INTEGER"/>
+    <result  column="threadNum"      property="threadNum"      jdbcType="INTEGER"/>
+    <result  column="className"      property="className"      jdbcType="VARCHAR"/>
+    <result  column="fetchSeeds"     property="fetchSeeds"     jdbcType="VARCHAR"/>
+    <result  column="tempPath"       property="tempPath"       jdbcType="VARCHAR"/>
+    <result  column="isStoreWeb"     property="isStoreWeb"     jdbcType="INTEGER"/>
+    <result  column="tempStorePath"  property="tempStorePath"  jdbcType="VARCHAR"/>
+    <result  column="cTime"          property="CTime"          jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <!-- 抓取处理批次记录 -->
+  <resultMap id="batchMap" type="batch">
+    <id      column="schemeId"     property="schemeId"     jdbcType="VARCHAR"/>
+    <result  column="schemeNum"    property="schemeNum"    jdbcType="INTEGER"/>
+    <result  column="beginTime"    property="beginTime"    jdbcType="TIMESTAMP"/>
+    <result  column="endTime"      property="endTime"      jdbcType="TIMESTAMP"/>
+    <result  column="duration"     property="duration"     jdbcType="INTEGER"/>
+    <result  column="visitCount"   property="visitCount"   jdbcType="INTEGER"/>
+    <result  column="insertCount"  property="insertCount"  jdbcType="INTEGER"/>
+    <result  column="updateCount"  property="updateCount"  jdbcType="INTEGER"/>
+    <result  column="delCount"     property="delCount"     jdbcType="INTEGER"/>
+    <result  column="flag"         property="flag"         jdbcType="INTEGER"/>
+  </resultMap>
+
+  <select id="getActiveSchemes" resultMap="schemeMap">
     select * from wt_c_Scheme where isValidate=1 and (crawlType=0 or (crawlType>processNum))
   </select>
 </mapper>

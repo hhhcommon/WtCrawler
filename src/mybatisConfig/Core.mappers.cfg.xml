@@ -11,8 +11,8 @@
     <typeAlias alias="batch" type="com.woting.crawler.core.scheme.persis.po.CrawlBatchPo"/>
   </typeAliases>
   <mappers>
-    <mapper resource="com/woting/crawler/core/persis/sql/Scheme.mapper.xml"/>
     <mapper resource="com/woting/crawler/core/persis/sql/DictMaster.mapper.xml"/>
     <mapper resource="com/woting/crawler/core/persis/sql/DictDetail.mapper.xml"/>
+    <mapper resource="com/woting/crawler/core/scheme/persis/sql/Scheme.mapper.xml"/>
   </mappers>
 </configuration>

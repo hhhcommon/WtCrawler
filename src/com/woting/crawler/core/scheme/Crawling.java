@@ -44,7 +44,7 @@ public class Crawling {
         String[] seeds=(conf.getProperty("FetchSeeds")).split(" ");
         WebCrawler wc = (WebCrawler)(Class.forName(conf.getProperty("CrawlClass")).newInstance());
         ControllerShell<WebCrawler> xmlyController= new ControllerShell<WebCrawler>(xmlyConf, wc, seeds, Integer.parseInt(conf.getProperty("threadNum")));
-        xmlyController.start(name);
         //启动Controller
+        xmlyController.start(name);
     }
 }

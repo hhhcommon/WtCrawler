@@ -10,7 +10,7 @@ import com.woting.crawler.core.scheme.persis.po.SchemePo;
 import com.woting.crawler.exceptionC.Wtcc1000CException;
 
 /**
- * 抓取模式。注意模式名称和抓取源不能同时相等
+ * 抓取方案。注意方案名称和抓取源不能同时相等
  * @author wanghui
  */
 public class Scheme implements ModelSwapPo {
@@ -26,14 +26,14 @@ public class Scheme implements ModelSwapPo {
     private int threadNum=1; //执行线程数:crawl4j
     private String className=null; //执行的抓取类:crawl4j
     private String fetchSeeds=null; //抓取内容种子URL，用空格隔开:crawl4j
-    private int processNum; //模式实际已经运行的次数，初始次数
+    private int processNum; //方案实际已经运行的次数，初始次数
     private String tempPath=null; //存储临时数据的本机操作系统路径，若为空，系统自动给出这个地址:crawl4j
     private int isStoreWeb; //是否存储网页：1存储；0不存储
     private String tempStorePath=null; //当isStoreWeb=1此字段才有意义， 网页内容存储的根路径，若为空，系统自动给出这个地址:crawl4j 
 
     private Timestamp CTime; //记录创建时间
 
-    private CrawlBatch crawlBatch; //该模式下正在处理的处理内容
+    private CrawlBatch crawlBatch; //该方案下正在处理的处理内容
 
     public String getId() {
         return id;
@@ -132,15 +132,15 @@ public class Scheme implements ModelSwapPo {
                 this.crawlBatch=crawlBatch;
                 crawlBatch.setScheme(this);
             } else {
-                if (!crawlBatch.getScheme().getId().equals(this.getId())) throw new Wtcc1000CException("抓取处理记录与模式不匹配");
+                if (!crawlBatch.getScheme().getId().equals(this.getId())) throw new Wtcc1000CException("抓取处理记录与方案不匹配");
                 this.crawlBatch=crawlBatch;
             }
         }
     }
 
     /**
-     * 判断两个模式Key是否相同(模式名称+源名称)
-     * @param other 另一个模式
+     * 判断两个方案Key是否相同(方案名称+源名称)
+     * @param other 另一个方案
      * @return 相同返回true，否则返回false;
      */
     public boolean keyEquals(Object other) {
@@ -152,8 +152,8 @@ public class Scheme implements ModelSwapPo {
     }
 
     /**
-     * 判断两个模式的处理是否相同（抓取类，抓取类型，抓取种子）
-     * @param other 另一个模式
+     * 判断两个方案的处理是否相同（抓取类，抓取类型，抓取种子）
+     * @param other 另一个方案
      * @return 相同返回true，否则返回false;
      */
     public boolean processEquals(Object other) {
@@ -168,9 +168,9 @@ public class Scheme implements ModelSwapPo {
     @Override
     public void buildFromPo(Object po) {
         if (po==null) throw new Plat0006CException("Po对象为空，无法从空对象得到概念/逻辑对象！");
-        if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取模式对象！");
+        if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取方案对象！");
         SchemePo _po = (SchemePo)po;
-        if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取模式对象！");
+        if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取方案对象！");
 
         this.setId(_po.getId());
         this.setSchemeName(_po.getSchemeName());
@@ -209,7 +209,7 @@ public class Scheme implements ModelSwapPo {
         ret.setCTime(this.getCTime());
         return ret;
         //以下无法处理
-//        private int schemeType;//模式类型，1-文件导入；2数据库方式
-//        private String fileUrls;//若是文件方式，则是文件名称，(相同的模式不同文件名，在这里用空格隔开)
+//        private int schemeType;//方案类型，1-文件导入；2数据库方式
+//        private String fileUrls;//若是文件方式，则是文件名称，(相同的方案不同文件名，在这里用空格隔开)
     }
 }

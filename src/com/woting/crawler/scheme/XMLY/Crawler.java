@@ -16,7 +16,6 @@ import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 import com.spiritdata.framework.util.SpiritRandom;
 import com.woting.crawler.ext.SpringShell;
-import com.woting.crawler.service.TestService;
 
 public class Crawler extends WebCrawler {
     private Logger logger = LoggerFactory.getLogger(this.getClass());

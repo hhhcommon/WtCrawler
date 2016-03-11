@@ -20,7 +20,7 @@ public class Source implements ModelSwapPo {
     private String sourceWeb; //主站站点URL，用空格隔开
     private Timestamp CTime; //记录创建时间
 
-    private List<Scheme> subSchemes; //以此为源的所有下级模式
+    private List<Scheme> subSchemes; //以此为源的所有下级方案
 
     public String getId() {
         return id;
@@ -67,7 +67,7 @@ public class Source implements ModelSwapPo {
         return ret;
     }
 
-    //下级模式处理
+    //下级方案处理
     public List<Scheme> getSubSchemes() {
         return subSchemes;
     }

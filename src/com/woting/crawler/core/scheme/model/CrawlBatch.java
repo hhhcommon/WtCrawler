@@ -17,7 +17,7 @@ public class CrawlBatch implements ModelSwapPo {
     private int delCount; //删除记录数
     private int flag; //抓取状态：0正在抓取；1抓取完成
 
-    private Scheme scheme; //抓取方案，这个批处理抓取任务所依据的模式
+    private Scheme scheme; //抓取方案，这个批处理抓取任务所依据的方案
 
     public int getSchemeNum() {
         return schemeNum;

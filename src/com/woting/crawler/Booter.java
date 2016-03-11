@@ -69,5 +69,7 @@ public class Booter {
         SpringShell.init();
         logger.info("加载Spring配置，用时[{}]毫秒", System.currentTimeMillis()-beginSpring);
         logger.info("内容抓取，环境初始化结束，共用时[{}]毫秒", System.currentTimeMillis()-beginTime);
+
+        //开始处理爬取任务
     }
 }

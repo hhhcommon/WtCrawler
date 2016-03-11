@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import com.spiritdata.framework.core.model.BaseObject;
 
 /**
- * 抓取模式的Po对象，与数据库表wt_c_Scheme字段一一对应
+ * 抓取方案的Po对象，与数据库表wt_c_Scheme字段一一对应
  * @author wanghui
  */
 public class SchemePo extends BaseObject {
@@ -14,8 +14,8 @@ public class SchemePo extends BaseObject {
     private String id;//抓取模版Id
     private String sourceId;//抓取源Id
 
-    private int schemeType;//模式类型，1-文件导入；2数据库方式
-    private String fileUrls;//若是文件方式，则是文件名称，(相同的模式不同文件名，在这里用空格隔开)
+    private int schemeType;//方案类型，1-文件导入；2数据库方式
+    private String fileUrls;//若是文件方式，则是文件名称，(相同的方案不同文件名，在这里用空格隔开)
 
     private String schemeName;//方案名称
     private String schemeDescn;//方案描述
@@ -23,7 +23,7 @@ public class SchemePo extends BaseObject {
     private int isValidate=1;//若是文件方式，则是文件名称
     private int crawlType=1;//抓取循环类型；1=只抓取1次，n抓取n次；0一直循环下去
     private long intervalTime=0;//两次抓取之间的间隔时间，毫秒；<=0上次完成后，立即执行；>0上次执行完间隔的毫秒数
-    private int processNum; //模式实际已经运行的次数
+    private int processNum; //方案实际已经运行的次数
 
     //以下是crawl4j所需要的
     private int threadNum=1; //执行线程数:crawl4j
