@@ -25,11 +25,19 @@ public class MainController {
      */
     public void loadScheme(int loadType, String[] schemeFiles) {
         this.activeSchemes=new ArrayList<Scheme>();
-        logger.info("加载模式<{}>", activeSchemes.size());
+        
         if (loadType==1) { //数据库方式
             SchemeService ss = (SchemeService)SpringShell.getBean("schemeService");
             activeSchemes=ss.getActiveSchemesFromDB();
         } else { //文件方式
+        }
+        if (activeSchemes==null||activeSchemes.isEmpty()) logger.info("无可用方案");
+        else {
+            String schemeNames="";
+            for (Scheme s: activeSchemes) {
+                schemeNames+=","+s.getSchemeName();
+            }
+            logger.info("加载方案<{}>个，为[{}]", activeSchemes.size(), schemeNames.substring(1));
         }
     }
 

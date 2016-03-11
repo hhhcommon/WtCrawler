@@ -1,5 +1,6 @@
 package com.woting.crawler.core.scheme.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -31,6 +32,13 @@ public class SchemeService {
 
     public List<Scheme> getActiveSchemesFromDB() {
         List<SchemePo> asList = schemeDao.queryForList("getActiveSchemes");
-        return null;
+        if (asList==null||asList.isEmpty()) return null;
+        List<Scheme> retl=new ArrayList<Scheme>();
+        for (SchemePo sPo: asList) {
+            Scheme s=new Scheme();
+            s.buildFromPo(sPo);
+            retl.add(s);
+        }
+        return retl;
     }
 }
