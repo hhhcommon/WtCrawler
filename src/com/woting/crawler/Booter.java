@@ -70,12 +70,6 @@ public class Booter {
         logger.info("加载Spring配置，用时[{}]毫秒", System.currentTimeMillis()-beginSpring);
         logger.info("内容抓取，环境初始化结束，共用时[{}]毫秒", System.currentTimeMillis()-beginTime);
 
-//        //开始处理爬取任务
-//        //用SystemCache实现对工程上下文信息的存储
-//        SpringShell.init();
-//        //开始喜马拉雅的爬取
-//        //Crawling.start("喜马拉雅", "conf/XMLY.properties");
-//        //开始蜻蜓的爬取
         //开始运行
         MainController mc= new MainController();
         mc.loadScheme(1, null);

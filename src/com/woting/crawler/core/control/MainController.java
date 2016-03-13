@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.scheme.model.Scheme;
 import com.woting.crawler.core.scheme.service.SchemeService;
 import com.woting.crawler.ext.SpringShell;
@@ -16,6 +17,7 @@ import com.woting.crawler.ext.SpringShell;
  */
 public class MainController {
     private Logger logger = LoggerFactory.getLogger(MainController.class);
+
     private List<Scheme> activeSchemes;//活动的可处理的方案
 
     /**
@@ -25,7 +27,7 @@ public class MainController {
      */
     public void loadScheme(int loadType, String[] schemeFiles) {
         this.activeSchemes=new ArrayList<Scheme>();
-        
+
         if (loadType==1) { //数据库方式
             SchemeService ss = (SchemeService)SpringShell.getBean("schemeService");
             activeSchemes=ss.getActiveSchemesFromDB();
@@ -44,8 +46,12 @@ public class MainController {
     public void runningScheme() {
         if (activeSchemes!=null&&!activeSchemes.isEmpty()) {
             for (Scheme s: activeSchemes) {
-                SchemeMoniter sm=new SchemeMoniter(s);
-                sm.start();
+                try {
+                    SchemeMoniter sm=new SchemeMoniter(s);
+                    sm.start();
+                } catch(Exception e) {
+                    logger.error("启动方案[{}]异常：{}", StringUtils.isNullOrEmptyOrSpace(s.getSchemeName())?"无名":s.getSchemeName(), e.getClass().getName()+"::"+e.getMessage());
+                }
             }
         }
     }

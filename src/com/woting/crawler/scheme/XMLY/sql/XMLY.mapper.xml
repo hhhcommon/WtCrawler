@@ -3,19 +3,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="XMLY">
   <!-- 新增数据 -->
-  <insert id="tempXMLY" parameterType="java.util.Map">
-    insert into XMLY_Temp
+        parseData.put("id", SequenceUUID.getUUIDSubSegment(4));
+        parseData.put("schemeId", s.getId());
+        parseData.put("schemeNum", s.getProcessNum()+1);
+        parseData.put("visitUrl", href);
+        parseData.put("parentUrl", page.getWebURL().getParentUrl());
+        parseData.put("assetType", ParseUtils.getType(href));
+
+        parseData.put("seqId", "");
+        parseData.put("seqName", "");
+        parseData.put("assetId", "");
+        parseData.put("assetName", "");
+        parseData.put("playUrl", "");
+        parseData.put("person", "");
+        parseData.put("imgUrl", "");
+        parseData.put("playCount", "");
+        parseData.put("catalog", "");
+        parseData.put("tags", "");
+        parseData.put("descript", "");
+        parseData.put("extInfo", "");
+  <insert id="insertOrgi" parameterType="java.util.Map">insert into XMLY_Original
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="URL!=null">url,</if>
-      <if test="ParentURL!=null">parUrl,</if>
-      <if test="Type!=null">type,</if>
-      <if test="Time!=null">time,</if>
+      <if test="id!=null">id,</if>
+      <if test="schemeId!=null">schemeId,</if>
+      <if test="schemeNum!=null">schemeNum,</if>
+      <if test="visitUrl!=null">visitUrl,</if>
+      <if test="parentUrl!=null">parentUrl,</if>
+      <if test="seqId!=null">seqId,</if>
+      <if test="seqName!=null">seqName,</if>
+      <if test="assetId!=null">assetId,</if>
+      <if test="assetName!=null">assetName,</if>
+      <if test="playUrl!=null">playUrl,</if>
+      <if test="person!=null">person,</if>
+      <if test="imgUrl!=null">imgUrl,</if>
+      <if test="playCount!=null">playCount,</if>
+      <if test="catalog!=null">catalog,</if>
+      <if test="tags!=null">tags,</if>
+      <if test="descript!=null">descript,</if>
+      <if test="extInfo!=null">extInfo,</if>
+      flag,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="URL!=null">#{URL,jdbcType=VARCHAR},</if>
-      <if test="ParentURL!=null">#{ParentURL,jdbcType=VARCHAR},</if>
-      <if test="Type!=null">#{Type,jdbcType=VARCHAR},</if>
-      <if test="Time!=null">#{Time,jdbcType=TIMESTAMP},</if>
+      <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
+      <if test="schemeId!=null">#{schemeId,jdbcType=VARCHAR},</if>
+      <if test="schemeNum!=null">#{schemeNum,jdbcType=INTEGER},</if>
+      <if test="visitUrl!=null">#{visitUrl,jdbcType=VARCHAR},</if>
+      <if test="parentUrl!=null">#{parentUrl,jdbcType=VARCHAR},</if>
+      <if test="seqId!=null">#{seqId,jdbcType=VARCHAR},</if>
+      <if test="seqName!=null">#{seqName,jdbcType=VARCHAR},</if>
+      <if test="assetId!=null">#{assetId,jdbcType=VARCHAR},</if>
+      <if test="assetName!=null">#{assetName,jdbcType=VARCHAR},</if>
+      <if test="playUrl!=null">#{playUrl,jdbcType=VARCHAR},</if>
+      <if test="person!=null">#{person,jdbcType=VARCHAR},</if>
+      <if test="imgUrl!=null">#{imgUrl,jdbcType=VARCHAR},</if>
+      <if test="playCount!=null">#{playCount,jdbcType=VARCHAR},</if>
+      <if test="catalog!=null">#{catalog,jdbcType=VARCHAR},</if>
+      <if test="tags!=null">#{tags,jdbcType=VARCHAR},</if>
+      <if test="descript!=null">#{descript,jdbcType=VARCHAR},</if>
+      <if test="extInfo!=null">#{extInfo,jdbcType=VARCHAR},</if>
+      0,
     </trim>
   </insert>
 </mapper>

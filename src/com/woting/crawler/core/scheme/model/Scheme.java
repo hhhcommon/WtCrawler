@@ -8,6 +8,7 @@ import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.scheme.persis.po.SchemePo;
 import com.woting.crawler.exceptionC.Wtcc1000CException;
+import com.woting.crawler.exceptionC.Wtcc1001CException;
 
 /**
  * 抓取方案。注意方案名称和抓取源不能同时相等
@@ -21,6 +22,7 @@ public class Scheme implements ModelSwapPo {
 
     private int crawlType=1;//抓取循环类型；1=只抓取1次，n抓取n次；0一直循环下去
     private long intervalTime=0;//两次抓取之间的间隔时间，毫秒；<=0上次完成后，立即执行；>0上次执行完间隔的毫秒数
+    private String origTableName;//对应原始数据表名称
 
     //以下是crawl4j所需要的
     private int threadNum=1; //执行线程数:crawl4j
@@ -75,6 +77,12 @@ public class Scheme implements ModelSwapPo {
     public void setIntervalTime(long intervalTime) {
         this.intervalTime = intervalTime;
     }
+    public String getOrigTableName() {
+        return origTableName;
+    }
+    public void setOrigTableName(String origTableName) {
+        this.origTableName = origTableName;
+    }
     public int getThreadNum() {
         return threadNum;
     }
@@ -98,6 +106,10 @@ public class Scheme implements ModelSwapPo {
     }
     public void setProcessNum(int processNum) {
         this.processNum = processNum;
+    }
+    //增加执行次数
+    public void increaseNum() {
+        this.processNum++;
     }
     public String getTempPath() {
         return tempPath;
@@ -171,6 +183,8 @@ public class Scheme implements ModelSwapPo {
         if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取方案对象！");
         SchemePo _po = (SchemePo)po;
         if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取方案对象！");
+
+        if (_po.getIsValidate()!=1) throw new Wtcc1001CException("无效抓取方案，无需转换");
 
         this.setId(_po.getId());
         this.setSchemeName(_po.getSchemeName());

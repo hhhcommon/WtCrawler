@@ -1,21 +1,30 @@
 package com.woting.crawler.core.scheme.model;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.woting.crawler.core.scheme.persis.po.CrawlBatchPo;
 
 public class CrawlBatch implements ModelSwapPo {
+    public CrawlBatch() {
+        super();
+        this.hasVisitedUrl=new HashMap<String,String>();
+    }
+
     private int schemeNum; //该方案下的序号
     private Timestamp beginTime; //方案执行开始时间
     private Timestamp endTime; //方案执行结束时间
-    private int duration; //执行总时间，毫秒数
-    private int visitCount; //总访问网页数
-    private int insertCount; //插入记录数
-    private int updateCount; //更新记录数
-    private int delCount; //删除记录数
-    private int flag; //抓取状态：0正在抓取；1抓取完成
+    private int duration=0; //执行总时间，毫秒数
+    private int visitCount=0; //总访问网页数
+    private int insertCount=0; //插入记录数
+    private int updateCount=0; //更新记录数
+    private int delCount=0; //删除记录数
+    private int flag=0; //抓取状态：0正在抓取；1抓取完成
+
+    private Map<String, String> hasVisitedUrl; //抓取状态：0正在抓取；1抓取完成
 
     private Scheme scheme; //抓取方案，这个批处理抓取任务所依据的方案
 
@@ -111,5 +120,18 @@ public class CrawlBatch implements ModelSwapPo {
         ret.setDelCount(this.getDelCount());
         ret.setFlag(this.getFlag());
         return ret;
+    }
+
+    public void addVisitedUrl(String url) {
+        this.hasVisitedUrl.put(url, url);
+    }
+
+    /**
+     * 判断Url是否已经被访问
+     * @param url  
+     * @return 若已访问，返回true
+     */
+    public boolean isVisited(String url) {
+        return this.hasVisitedUrl.get(url)!=null;
     }
 }

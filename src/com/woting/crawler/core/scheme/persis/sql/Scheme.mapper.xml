@@ -25,6 +25,7 @@
     <result  column="intervalTime"   property="intervalTime"   jdbcType="INTEGER"/>
     <result  column="threadNum"      property="threadNum"      jdbcType="INTEGER"/>
     <result  column="className"      property="className"      jdbcType="VARCHAR"/>
+    <result  column="origTableName"  property="origTableName"  jdbcType="VARCHAR"/>
     <result  column="fetchSeeds"     property="fetchSeeds"     jdbcType="VARCHAR"/>
     <result  column="tempPath"       property="tempPath"       jdbcType="VARCHAR"/>
     <result  column="isStoreWeb"     property="isStoreWeb"     jdbcType="INTEGER"/>
@@ -46,9 +47,79 @@
     <result  column="flag"         property="flag"         jdbcType="INTEGER"/>
   </resultMap>
 
+  <!-- 方案=============================== -->
+  <!-- 获取 可用的方案列表 -->
   <select id="getActiveSchemes" resultMap="schemeMap">
   <![CDATA[
     select * from wt_c_Scheme where isValidate=1 and (crawlType=0 or (crawlType>processNum))
   ]]>
   </select>
+  <!-- 修改 抓取方案 -->
+  <update id="updateScheme" parameterType="java.util.Map">
+    update wt_c_Scheme
+    <set>
+      <if test="sourceId!=null">sourceId=#{sourceId,jdbcType=VARCHAR},</if>
+      <if test="schemeType!=null">schemeType=#{schemeType,jdbcType=INTEGER},</if>
+      <if test="fileUrls!=null">fileUrls=#{fileUrls,jdbcType=VARCHAR},</if>
+      <if test="isValidate!=null and isValidate!=0">isValidate=#{isValidate,jdbcType=INTEGER},</if>
+      <if test="schemeName!=null">schemeName=#{schemeName,jdbcType=VARCHAR},</if>
+      <if test="schemeDescn!=null">schemeDescn=#{schemeDescn,jdbcType=VARCHAR},</if>
+      <if test="processNum!=null and processNum!=0">processNum=#{processNum,jdbcType=INTEGER},</if>
+      <if test="intervalTime!=null and intervalTime!=0">intervalTime=#{intervalTime,jdbcType=INTEGER},</if>
+      <if test="threadNum!=null and threadNum!=0">threadNum=#{threadNum,jdbcType=INTEGER},</if>
+      <if test="className!=null">className=#{className,jdbcType=VARCHAR},</if>
+      <if test="origTableName!=null">origTableName=#{origTableName,jdbcType=VARCHAR},</if>
+      <if test="fetchSeeds!=null">fetchSeeds=#{fetchSeeds,jdbcType=VARCHAR},</if>
+      <if test="tempPath!=null">tempPath=#{tempPath,jdbcType=VARCHAR},</if>
+      <if test="isStoreWeb!=null and isStoreWeb!=0">isStoreWeb=#{isStoreWeb,jdbcType=INTEGER},</if>
+      <if test="tempStorePath!=null">tempStorePath=#{tempStorePath,jdbcType=VARCHAR},</if>
+    </set>
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 批次=============================== -->
+  <!-- 获取 抓取批次 按主键 -->
+  <select id="getBatchByKey" resultMap="batchMap" parameterType="java.util.Map">
+    select * from wt_c_Batch where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+  </select>
+  <!-- 新增 批次 -->
+  <insert id="insertBatch" parameterType="java.util.Map"> insert into wt_c_Batch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="schemeId!=null">schemeId,</if>
+      <if test="schemeNum!=null">schemeNum,</if>
+      <if test="beginTime!=null">beginTime,</if>
+      <if test="endTime!=null">endTime,</if>
+      <if test="duration!=null and duration!=0">duration,</if>
+      <if test="visitCount!=null and visitCount!=0">visitCount,</if>
+      <if test="insertCount!=null and insertCount!=0">insertCount,</if>
+      <if test="updateCount!=null and updateCount!=0">updateCount,</if>
+      <if test="delCount!=null and delCount!=0">delCount,</if>
+      <if test="flag!=null and flag!=0">flag,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="schemeId!=null">#{schemeId,jdbcType=VARCHAR}</if>
+      <if test="schemeNum!=null">#{schemeNum,jdbcType=INTEGER},</if>
+      <if test="beginTime!=null">#{beginTime,jdbcType=TIMESTAMP},</if>
+      <if test="endTime!=null">#{endTime,jdbcType=TIMESTAMP},</if>
+      <if test="duration!=null and duration!=0">#{duration,jdbcType=INTEGER},</if>
+      <if test="visitCount!=null and visitCount!=0">#{visitCount,jdbcType=INTEGER},</if>
+      <if test="insertCount!=null and insertCount!=0">#{insertCount,jdbcType=INTEGER},</if>
+      <if test="updateCount!=null and updateCount!=0">#{updateCount,jdbcType=INTEGER},</if>
+      <if test="delCount!=null and delCount!=0">#{delCount,jdbcType=INTEGER},</if>
+      <if test="flag!=null and flag!=0">#{flag,jdbcType=INTEGER},</if>
+    </trim>
+  </insert>
+  <!-- 完成 抓取方案 -->
+  <update id="finishedBatch" parameterType="java.util.Map">
+    update wt_c_Batch set flag=1 where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+  </update>
+
+  <!-- 原始数据=============================== -->
+  <select id="orgiCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(*) from ${orgiTable} where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+  </select>
+  <select id="getSchemeBatchVisitedList" resultType="java.util.Map" parameterType="java.util.Map">
+    select * from ${orgiTable} where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+  </select>
+  
 </mapper>
