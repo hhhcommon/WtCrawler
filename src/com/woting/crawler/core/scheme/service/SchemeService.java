@@ -117,10 +117,11 @@ public class SchemeService {
      * @param curNum 当前批次号
      * @param cBatch 批次数据，本处理的的返回值就在这个数据中
      */
-    public void initVisitedUrl(String id, int curNum, CrawlBatch cBatch) {
+    public void initVisitedUrl(CrawlBatch cBatch) {
         Map<String, Object> keyM=new HashMap<String, Object>();
-        keyM.put("schemeId", id);
-        keyM.put("schemeNum", curNum);
+        keyM.put("schemeId", cBatch.getScheme().getId());
+        keyM.put("schemeNum", cBatch.getSchemeNum());
+        keyM.put("orgiTable", cBatch.getScheme().getOrigTableName());
         long count=batchDao.getCount("orgiCount", keyM);
         long hasCount=0;
         int pageNumber=0, pageSize=1000;

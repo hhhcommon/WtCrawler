@@ -122,7 +122,7 @@ public class CrawlBatch implements ModelSwapPo {
         return ret;
     }
 
-    public void addVisitedUrl(String url) {
+    synchronized public void addVisitedUrl(String url) {
         this.hasVisitedUrl.put(url, url);
     }
 
@@ -131,7 +131,7 @@ public class CrawlBatch implements ModelSwapPo {
      * @param url  
      * @return 若已访问，返回true
      */
-    public boolean isVisited(String url) {
+    synchronized public boolean isVisited(String url) {
         return this.hasVisitedUrl.get(url)!=null;
     }
 }

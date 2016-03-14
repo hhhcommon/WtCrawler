@@ -56,8 +56,8 @@ public class SchemeMoniter extends Thread {
 
                 this.scheme.increaseNum();
                 if (this.scheme.getCrawlType()>0&&this.scheme.getCrawlType()-this.scheme.getProcessNum()<=0) canRun=false;
-                if (canRun) { //
-                    
+                if (canRun) { //间隔时间处理
+                    sleep(scheme.getIntervalTime()<0?0:scheme.getIntervalTime());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

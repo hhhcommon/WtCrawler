@@ -51,10 +51,10 @@ public class Crawling extends Thread {
             //计算Berkeley DB的临时目录
             String dbPath="";
             if (StringUtils.isNullOrEmptyOrSpace(scheme.getTempPath())) {
-                dbPath=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"/dbStore/"+scheme.getId()+"_"+this.curNum;
+                dbPath=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"dbStore/"+scheme.getId()+"_"+this.curNum;
             } else {
                 dbPath=scheme.getTempPath();
-                if (!dbPath.startsWith("/")) dbPath=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"/dbStore/"+scheme.getTempPath();
+                if (!dbPath.startsWith("/")) dbPath=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"dbStore/"+scheme.getTempPath();
             }
             logger.debug("{}Berkeley DB临时存储目录[{}]",StringUtils.isNullOrEmptyOrSpace(scheme.getTempPath())?"系统计算":"方案设置",dbPath);
             //计算网页存储
@@ -63,9 +63,9 @@ public class Crawling extends Thread {
             else {//存储
                 storeUrl=scheme.getTempStorePath();
                 if (StringUtils.isNullOrEmptyOrSpace(storeUrl)) {
-                    storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"/webStore/"+scheme.getId()+"_"+this.curNum;
+                    storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"webStore/"+scheme.getId()+"_"+this.curNum;
                 } else {
-                    if (!storeUrl.startsWith("/")) storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"/webStore/"+storeUrl;
+                    if (!storeUrl.startsWith("/")) storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"webStore/"+storeUrl;
                 }
             }
             if (StringUtils.isNullOrEmptyOrSpace(storeUrl)) {
@@ -84,9 +84,11 @@ public class Crawling extends Thread {
                 cBatch.setScheme(scheme);
                 cBatch.setSchemeNum(this.curNum);
                 cBatch.setBeginTime(new Timestamp(System.currentTimeMillis()));
+                cBatch.setEndTime(new Timestamp(System.currentTimeMillis()));
                 sService.insertBatch(cBatch);
             } else {//获取上次抓取内容
-                sService.initVisitedUrl(scheme.getId(), this.curNum, cBatch);
+                cBatch.setScheme(scheme);
+                sService.initVisitedUrl(cBatch);
             }
             scheme.setCrawlBatch(cBatch);
 

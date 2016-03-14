@@ -189,6 +189,7 @@ public class Scheme implements ModelSwapPo {
         this.setId(_po.getId());
         this.setSchemeName(_po.getSchemeName());
         this.setSchemeDescn(_po.getSchemeDescn());
+        this.setOrigTableName(_po.getOrigTableName());
         this.setCrawlType(_po.getCrawlType());
         this.setIntervalTime(_po.getIntervalTime());
         this.setClassName(_po.getClassName());
@@ -210,6 +211,7 @@ public class Scheme implements ModelSwapPo {
         ret.setSourceId(this.getSource()==null?null:this.getSource().getId());
         ret.setSchemeName(this.getSchemeName());
         ret.setSchemeDescn(this.getSchemeDescn());
+        ret.setOrigTableName(this.getOrigTableName());
         ret.setCrawlType(this.getCrawlType());
         ret.setIsValidate(1);
         ret.setIntervalTime(this.getIntervalTime());

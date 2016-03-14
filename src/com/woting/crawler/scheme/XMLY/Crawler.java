@@ -81,9 +81,10 @@ public class Crawler extends WebCrawler {
         parseData.put("schemeId", s.getId());
         parseData.put("schemeNum", s.getProcessNum()+1);
         parseData.put("visitUrl", href);
-        parseData.put("parentUrl", page.getWebURL().getParentUrl());
+        parseData.put("parentUrl", StringUtils.isNullOrEmptyOrSpace(page.getWebURL().getParentUrl())?"":page.getWebURL().getParentUrl());
         parseData.put("assetType", ParseUtils.getType(href));
 
+        /**
         parseData.put("seqId", "");
         parseData.put("seqName", "");
         parseData.put("assetId", "");
@@ -96,6 +97,8 @@ public class Crawler extends WebCrawler {
         parseData.put("tags", "");
         parseData.put("descript", "");
         parseData.put("extInfo", "");
+         */
         xmlyService.insertOrig(parseData);
+        s.getCrawlBatch().addVisitedUrl(href);
     }
 }

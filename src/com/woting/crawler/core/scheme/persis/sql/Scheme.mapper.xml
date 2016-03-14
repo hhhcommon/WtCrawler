@@ -80,7 +80,7 @@
   <!-- 批次=============================== -->
   <!-- 获取 抓取批次 按主键 -->
   <select id="getBatchByKey" resultMap="batchMap" parameterType="java.util.Map">
-    select * from wt_c_Batch where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+    select * from wt_c_Batch where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
   </select>
   <!-- 新增 批次 -->
   <insert id="insertBatch" parameterType="java.util.Map"> insert into wt_c_Batch
@@ -97,7 +97,7 @@
       <if test="flag!=null and flag!=0">flag,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="schemeId!=null">#{schemeId,jdbcType=VARCHAR}</if>
+      <if test="schemeId!=null">#{schemeId,jdbcType=VARCHAR},</if>
       <if test="schemeNum!=null">#{schemeNum,jdbcType=INTEGER},</if>
       <if test="beginTime!=null">#{beginTime,jdbcType=TIMESTAMP},</if>
       <if test="endTime!=null">#{endTime,jdbcType=TIMESTAMP},</if>
