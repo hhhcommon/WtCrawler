@@ -152,6 +152,7 @@ public class SchemeService {
         Map<String, Object> param=new HashMap<String, Object>();
         param=scheme.getCrawlBatch().convert2Po().toHashMap();
         param.put("orgiTable", scheme.getOrigTableName());
+        param.put("duration", System.currentTimeMillis()-scheme.getCrawlBatch().getBeginTime().getTime());
         batchDao.update("batchProgress4Fetch", param);
     }
 }

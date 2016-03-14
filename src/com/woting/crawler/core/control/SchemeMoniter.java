@@ -46,11 +46,11 @@ public class SchemeMoniter extends Thread {
                 cling=new Crawling(this.scheme);
                 cling.start();
                 while (cling.getContraller()==null) sleep(10);
-                //改写抓取情况，每5分钟写1次
+                //改写抓取情况，半分钟更新1次
                 int i=0;
                 while (!cling.getContraller().isFinished()) {
                     sleep(1000);
-                    if (i++>300) {
+                    if (i++>30) {
                         i=0;
                         //写一次
                         sService.updateBatchProgress4Fetch(scheme);
@@ -60,6 +60,7 @@ public class SchemeMoniter extends Thread {
                 //数据库处理
                 sService.updateScheme(scheme); //1方案修改
                 sService.finishBatch(scheme.getCrawlBatch());//2批次处理
+                sService.updateBatchProgress4Fetch(scheme);//3更新批处理
                 long endTime=System.currentTimeMillis();
                 logger.info("[{}]结束运行：时间 <{}>", schemeDesc, DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(startTime)));
                 logger.info("[{}]所用时间：毫秒<{}>", schemeDesc, endTime-startTime);

@@ -62,24 +62,23 @@ public class Crawler extends WebCrawler {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
-
         String href = page.getWebURL().getURL().toLowerCase();
         href=href.trim().toLowerCase();
 
-        logger.info("分析网页：{}", href);
-        //保存文件
-        if (needStoreWeb) {
-            String fileName=tempStorePath+href.substring("http://www.ximalaya.com".length());
-            if (fileName.endsWith("/")) fileName=fileName.substring(0, fileName.length()-1);
-            fileName+=".html";
-            try {
-                FileUtils.writeByteArrayToFile(new File(fileName), page.getContentData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         if (ParseUtils.getType(href)>0) {
+            logger.info("分析网页：{}", href);
+            //保存文件
+            if (needStoreWeb) {
+                String fileName=tempStorePath+href.substring("http://www.ximalaya.com".length());
+                if (fileName.endsWith("/")) fileName=fileName.substring(0, fileName.length()-1);
+                fileName+=".html";
+                try {
+                    FileUtils.writeByteArrayToFile(new File(fileName), page.getContentData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             //分析内容
             Map<String, Object> parseData=new HashMap<String, Object>();
             parseData.put("id", SequenceUUID.getUUIDSubSegment(4));

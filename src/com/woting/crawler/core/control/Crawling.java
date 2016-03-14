@@ -61,11 +61,13 @@ public class Crawling extends Thread {
             String storeUrl="";
             if (scheme.getIsStoreWeb()==0) storeUrl="";//不存储
             else {//存储
+                String needPath="webStore/"+scheme.getId()+"_"+this.curNum;
                 storeUrl=scheme.getTempStorePath();
                 if (StringUtils.isNullOrEmptyOrSpace(storeUrl)) {
-                    storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"webStore/"+scheme.getId()+"_"+this.curNum;
+                    storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+needPath;
                 } else {
-                    if (!storeUrl.startsWith("/")) storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+"webStore/"+storeUrl;
+                    storeUrl+="webStore/"+scheme.getId()+"_"+this.curNum;
+                    if (!storeUrl.startsWith("/")) storeUrl=SystemCache.getCache(CrawlerConstants.APP_PATH).getContent()+storeUrl;
                 }
             }
             if (StringUtils.isNullOrEmptyOrSpace(storeUrl)) {
