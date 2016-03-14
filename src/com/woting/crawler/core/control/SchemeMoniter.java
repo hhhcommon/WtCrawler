@@ -46,6 +46,16 @@ public class SchemeMoniter extends Thread {
                 cling=new Crawling(this.scheme);
                 cling.start();
                 while (cling.getContraller()==null) sleep(10);
+                //改写抓取情况，每5分钟写1次
+                int i=0;
+                while (!cling.getContraller().isFinished()) {
+                    sleep(1000);
+                    if (i++>300) {
+                        i=0;
+                        //写一次
+                        sService.updateBatchProgress4Fetch(scheme);
+                    }
+                }
                 cling.getContraller().waitUntilFinish();
                 //数据库处理
                 sService.updateScheme(scheme); //1方案修改

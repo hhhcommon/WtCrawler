@@ -46,10 +46,13 @@ public class Crawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
+        href=href.trim().toLowerCase();
+        //url判断
+        if (!href.startsWith("http://www.ximalaya.com")) return false;
+        if (ParseUtils.getType(href)<=0) return false;
         //是否已经访问过了
         if (s.getCrawlBatch().isVisited(href)) return false;
-        //是否是所要的喜马拉雅的页面
-        return href.startsWith("http://www.ximalaya.com")&&(ParseUtils.getType(href)>0);
+        return true;
     }
 
     @Override
@@ -61,8 +64,9 @@ public class Crawler extends WebCrawler {
         }
 
         String href = page.getWebURL().getURL().toLowerCase();
+        href=href.trim().toLowerCase();
+
         logger.info("分析网页：{}", href);
-        
         //保存文件
         if (needStoreWeb) {
             String fileName=tempStorePath+href.substring("http://www.ximalaya.com".length());
@@ -75,30 +79,32 @@ public class Crawler extends WebCrawler {
             }
         }
 
-        //分析内容
-        Map<String, Object> parseData=new HashMap<String, Object>();
-        parseData.put("id", SequenceUUID.getUUIDSubSegment(4));
-        parseData.put("schemeId", s.getId());
-        parseData.put("schemeNum", s.getProcessNum()+1);
-        parseData.put("visitUrl", href);
-        parseData.put("parentUrl", StringUtils.isNullOrEmptyOrSpace(page.getWebURL().getParentUrl())?"":page.getWebURL().getParentUrl());
-        parseData.put("assetType", ParseUtils.getType(href));
+        if (ParseUtils.getType(href)>0) {
+            //分析内容
+            Map<String, Object> parseData=new HashMap<String, Object>();
+            parseData.put("id", SequenceUUID.getUUIDSubSegment(4));
+            parseData.put("schemeId", s.getId());
+            parseData.put("schemeNum", s.getProcessNum()+1);
+            parseData.put("visitUrl", href);
+            parseData.put("parentUrl", StringUtils.isNullOrEmptyOrSpace(page.getWebURL().getParentUrl())?"":page.getWebURL().getParentUrl());
+            parseData.put("assetType", ParseUtils.getType(href));
 
-        /**
-        parseData.put("seqId", "");
-        parseData.put("seqName", "");
-        parseData.put("assetId", "");
-        parseData.put("assetName", "");
-        parseData.put("playUrl", "");
-        parseData.put("person", "");
-        parseData.put("imgUrl", "");
-        parseData.put("playCount", "");
-        parseData.put("catalog", "");
-        parseData.put("tags", "");
-        parseData.put("descript", "");
-        parseData.put("extInfo", "");
-         */
-        xmlyService.insertOrig(parseData);
-        s.getCrawlBatch().addVisitedUrl(href);
+            /**
+            parseData.put("seqId", "");
+            parseData.put("seqName", "");
+            parseData.put("assetId", "");
+            parseData.put("assetName", "");
+            parseData.put("playUrl", "");
+            parseData.put("person", "");
+            parseData.put("imgUrl", "");
+            parseData.put("playCount", "");
+            parseData.put("catalog", "");
+            parseData.put("tags", "");
+            parseData.put("descript", "");
+            parseData.put("extInfo", "");
+             */
+            xmlyService.insertOrig(parseData);
+            s.getCrawlBatch().addVisitedUrl(href);
+        }
     }
 }

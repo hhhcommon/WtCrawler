@@ -135,7 +135,23 @@ public class SchemeService {
         }
     }
 
+    /**
+     * 结束批次的信息写入数据库
+     * @param crawlBatch
+     */
     public void finishBatch(CrawlBatch crawlBatch) {
         batchDao.update("finishedBatch", crawlBatch.convert2Po());
+    }
+
+    /**
+     * 更新某方案当前运行批次的进度情况:为抓取
+     * @param scheme 方案
+     */
+    public void updateBatchProgress4Fetch(Scheme scheme) {
+        if (scheme==null||scheme.getCrawlBatch()==null) return;
+        Map<String, Object> param=new HashMap<String, Object>();
+        param=scheme.getCrawlBatch().convert2Po().toHashMap();
+        param.put("orgiTable", scheme.getOrigTableName());
+        batchDao.update("batchProgress4Fetch", param);
     }
 }

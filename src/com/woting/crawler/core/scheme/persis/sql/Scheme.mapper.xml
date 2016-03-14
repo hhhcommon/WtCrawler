@@ -109,17 +109,22 @@
       <if test="flag!=null and flag!=0">#{flag,jdbcType=INTEGER},</if>
     </trim>
   </insert>
-  <!-- 完成 抓取方案 -->
+
+  <!-- 更新 方案当前运行批次进度情况 -->
+  <update id="batchProgress4Fetch" parameterType="java.util.Map">
+    update wt_c_Batch set visitCount=(select count(*) from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}) where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+  </update>
+  <!-- 完成 方案的抓取批次 -->
   <update id="finishedBatch" parameterType="java.util.Map">
-    update wt_c_Batch set flag=1 where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+    update wt_c_Batch set flag=1 where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
   </update>
 
   <!-- 原始数据=============================== -->
   <select id="orgiCount" resultType="java.lang.Integer" parameterType="java.util.Map">
-    select count(*) from ${orgiTable} where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+    select count(*) from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
   </select>
   <select id="getSchemeBatchVisitedList" resultType="java.util.Map" parameterType="java.util.Map">
-    select * from ${orgiTable} where schemeId=#{id,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+    select * from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
   </select>
   
 </mapper>
