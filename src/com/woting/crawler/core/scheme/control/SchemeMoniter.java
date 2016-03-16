@@ -1,4 +1,4 @@
-package com.woting.crawler.core.control;
+package com.woting.crawler.core.scheme.control;
 
 import java.util.Date;
 
@@ -32,12 +32,11 @@ public class SchemeMoniter extends Thread {
         String crawlType="循环执行，已执行<"+scheme.getProcessNum()+">次";
         if (scheme.getCrawlType()>0) crawlType="重复执行<"+scheme.getCrawlType()+">次，已执行<"+scheme.getProcessNum()+">次";
         logger.info("抓取类型：{}", crawlType);
-
         logger.info("是否存储页面：{}", scheme.getIsStoreWeb()==1?"存储":"不存储");
 
         Crawling cling=null;
-
         boolean canRun=true;
+        boolean etlRun=true;
         while(canRun) {
             try {
                 String schemeDesc=scheme.getSchemeName()+"::"+(scheme.getProcessNum()+1);
@@ -45,6 +44,7 @@ public class SchemeMoniter extends Thread {
                 logger.info("[{}]开始运行:时间<{}>", schemeDesc, DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(startTime)));
                 cling=new Crawling(this.scheme);
                 cling.start();
+
                 while (cling.getContraller()==null) sleep(10);
                 //改写抓取情况，半分钟更新1次
                 int i=0;

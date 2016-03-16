@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.spiritdata.framework.util.JsonUtils;
+import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.HttpUtils;
 
 public abstract class ParseUtils {
@@ -48,8 +49,8 @@ public abstract class ParseUtils {
         Document doc=Jsoup.parse(new String(htmlByteArray), "UTF-8");
 
         //得到名称、ID、img
-        eles=doc.select("div.personal_body").select("div.left").select("img");
         try {
+            eles=doc.select("div.personal_body").select("div.left").select("img");
             if (eles!=null&&!eles.isEmpty()) {
                 e=eles.get(0);
                 parseData.put("seqName", e.attr("alt"));
@@ -65,8 +66,10 @@ public abstract class ParseUtils {
                 parseData.put("catalog", e.select("a").get(0).html());
                 parseData.put("playUrl", e.select("a").get(0).attr("href"));
                 String lastUpdateDay=e.select("span").html();
-                lastUpdateDay.substring(lastUpdateDay.lastIndexOf(":"));
-                extInfo.put("lastUpdateTime", lastUpdateDay.trim());
+                if (!StringUtils.isNullOrEmptyOrSpace(lastUpdateDay)) {
+                    lastUpdateDay=lastUpdateDay.substring(lastUpdateDay.lastIndexOf(":")+1);
+                    extInfo.put("lastUpdateTime", lastUpdateDay.trim());
+                }
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //标签
@@ -93,8 +96,8 @@ public abstract class ParseUtils {
         try {
             eles=doc.select("div.detailContent_intro");
             if (eles!=null&&!eles.isEmpty()) {
-                parseData.put("descript", eles.select("mid_intro").select("article").get(0).html());
-                extInfo.put("seqDescn", eles.select("rich_intro").select("article").get(0).html());
+                parseData.put("descript", eles.select("div.mid_intro").select("article").get(0).html());
+                extInfo.put("seqDescn", eles.select("div.rich_intro").select("article").get(0).html());
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //专辑
@@ -103,9 +106,9 @@ public abstract class ParseUtils {
             eles=doc.select("span.albumSoundcount");
             extInfo.put("seqCount", ParseUtils.getFirstNum(eles.html()));
             //eles=doc.select("div.personal_body").select("div.detailContent").select("div.c1").select("div.right").select("a.shareLink shareLink2");
-            eles=doc.select("a.shareLink shareLink2");
+            eles=doc.select("a.shareLink");
             extInfo.put("zhuboId", eles.get(0).attr("album_uid"));
-            extInfo.put("seqId", eles.get(0).attr("album_id"));
+            parseData.put("seqId", eles.get(0).attr("album_id"));
         } catch(Exception ex) {ex.printStackTrace();}
         //扩展内容
         try {
@@ -126,6 +129,16 @@ public abstract class ParseUtils {
         Map<String, Object> extInfo=new HashMap<String, Object>();
         Document doc=Jsoup.parse(new String(htmlByteArray), "UTF-8");
 
+        //得到名称、ID、img
+        try {
+            eles=doc.select("img[sound_popsrc]");
+            if (eles!=null&&!eles.isEmpty()) {
+                e=eles.get(0);
+                parseData.put("assetId", e.attr("sound_popsrc"));
+                parseData.put("assetName", e.attr("alt"));
+                parseData.put("imgUrl", e.attr("src"));
+            }
+        } catch(Exception ex) {ex.printStackTrace();}
         //声音
         try {
             eles=doc.select("div.detail_soundBox2");
@@ -140,17 +153,6 @@ public abstract class ParseUtils {
             }
         } catch(Exception ex) {ex.printStackTrace();}
         if (parseData.get("playUrl")==null) return;//若获得不到声音，则不用进行后续处理了，没有声音的也入原始库
-
-        //得到名称、ID、img
-        eles=doc.select("img[sound_popsrc]");
-        try {
-            if (eles!=null&&!eles.isEmpty()) {
-                e=eles.get(0);
-                parseData.put("assetId", e.attr("sound_popsrc"));
-                parseData.put("assetName", e.attr("alt"));
-                parseData.put("imgUrl", e.attr("src"));
-            }
-        } catch(Exception ex) {ex.printStackTrace();}
         //类别
         try {
             eles=doc.select("div.detailContent_category");
@@ -262,7 +264,7 @@ public abstract class ParseUtils {
         int gene=1;
         if (_firstNumStr.endsWith("万")) {
             gene=10000;
-            _firstNumStr=_firstNumStr.substring(0, i-2);
+            _firstNumStr=_firstNumStr.substring(0, _firstNumStr.length()-1);
         }
         if (_firstNumStr.endsWith(".")) _firstNumStr+="0";
         float f=Float.parseFloat(_firstNumStr);

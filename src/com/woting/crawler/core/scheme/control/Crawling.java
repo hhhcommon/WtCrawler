@@ -1,4 +1,4 @@
-package com.woting.crawler.core.control;
+package com.woting.crawler.core.scheme.control;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

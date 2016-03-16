@@ -1,4 +1,4 @@
-package com.woting.crawler.core.control;
+package com.woting.crawler.core.scheme.control;
 
 import java.util.ArrayList;
 import java.util.List;
