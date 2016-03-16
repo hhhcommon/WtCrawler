@@ -1,4 +1,4 @@
-package com.woting.crawler.scheme.XMLY;
+package com.woting.crawler.scheme.XMLY.crawl;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import com.spiritdata.framework.util.SpiritRandom;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.scheme.model.Scheme;
 import com.woting.crawler.ext.SpringShell;
+import com.woting.crawler.scheme.XMLY.XmlyService;
 
 public class Crawler extends WebCrawler {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -117,8 +118,12 @@ public class Crawler extends WebCrawler {
             parseData.put("descript", "");
             parseData.put("extInfo", "");
             */
-            xmlyService.insertOrig(parseData);
-            s.getCrawlBatch().addVisitedUrl(href);
+            synchronized(s.getCrawlBatch().lock) {
+                if (!s.getCrawlBatch().isVisited(href)) {
+                    xmlyService.insertOrig(parseData);
+                    s.getCrawlBatch().addVisitedUrl(href);
+                }
+            }
         }
     }
 }

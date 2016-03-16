@@ -6,10 +6,11 @@ import java.util.Map;
 
 import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
-import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.crawler.core.scheme.persis.po.CrawlBatchPo;
 
 public class CrawlBatch implements ModelSwapPo {
+    final public Object lock=new Object();
+
     public CrawlBatch() {
         super();
         this.hasVisitedUrl=new HashMap<String,String>();
@@ -123,8 +124,8 @@ public class CrawlBatch implements ModelSwapPo {
         return ret;
     }
 
-    synchronized public void addVisitedUrl(String url) {
-        this.hasVisitedUrl.put(url, SequenceUUID.getUUIDSubSegment(1));
+    public void addVisitedUrl(String url) {
+        this.hasVisitedUrl.put(url, "0");
     }
 
     /**
@@ -132,7 +133,9 @@ public class CrawlBatch implements ModelSwapPo {
      * @param url  
      * @return 若已访问，返回true
      */
-    synchronized public boolean isVisited(String url) {
-        return this.hasVisitedUrl.get(url)!=null;
+    public boolean isVisited(String url) {
+        synchronized(lock) {
+            return this.hasVisitedUrl.get(url)!=null;
+        }
     }
 }
