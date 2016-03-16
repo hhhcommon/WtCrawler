@@ -12,6 +12,7 @@
       <if test="parentUrl!=null">parentUrl,</if>
       <if test="seqId!=null">seqId,</if>
       <if test="seqName!=null">seqName,</if>
+      <if test="assetType!=null">assetType,</if>
       <if test="assetId!=null">assetId,</if>
       <if test="assetName!=null">assetName,</if>
       <if test="playUrl!=null">playUrl,</if>
@@ -32,6 +33,7 @@
       <if test="parentUrl!=null">#{parentUrl,jdbcType=VARCHAR},</if>
       <if test="seqId!=null">#{seqId,jdbcType=VARCHAR},</if>
       <if test="seqName!=null">#{seqName,jdbcType=VARCHAR},</if>
+      <if test="assetType!=null">#{assetType,jdbcType=INTEGER},</if>
       <if test="assetId!=null">#{assetId,jdbcType=VARCHAR},</if>
       <if test="assetName!=null">#{assetName,jdbcType=VARCHAR},</if>
       <if test="playUrl!=null">#{playUrl,jdbcType=VARCHAR},</if>

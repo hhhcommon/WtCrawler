@@ -65,7 +65,8 @@ public class Crawler extends WebCrawler {
         String href = page.getWebURL().getURL().toLowerCase();
         href=href.trim().toLowerCase();
 
-        if (ParseUtils.getType(href)>0) {
+        int pageType=ParseUtils.getType(href);
+        if (pageType>0) {
             logger.info("分析网页：{}", href);
             //保存文件
             if (needStoreWeb) {
@@ -88,6 +89,20 @@ public class Crawler extends WebCrawler {
             parseData.put("parentUrl", StringUtils.isNullOrEmptyOrSpace(page.getWebURL().getParentUrl())?"":page.getWebURL().getParentUrl());
             parseData.put("assetType", ParseUtils.getType(href));
 
+            switch (pageType) {
+            case 1:
+                ParseUtils.parseAlbum(page.getContentData(), parseData);
+                break;
+            case 2:
+                ParseUtils.parseSond(page.getContentData(), parseData);
+                break;
+/*            case 3:
+                ParseUtils.parseZhubo(page.getContentData(), parseData);
+                break;
+            case 4:
+                ParseUtils.parseTags(page.getContentData(), parseData);
+                break;*/
+            }
             /**
             parseData.put("seqId", "");
             parseData.put("seqName", "");
@@ -101,7 +116,7 @@ public class Crawler extends WebCrawler {
             parseData.put("tags", "");
             parseData.put("descript", "");
             parseData.put("extInfo", "");
-             */
+            */
             xmlyService.insertOrig(parseData);
             s.getCrawlBatch().addVisitedUrl(href);
         }
