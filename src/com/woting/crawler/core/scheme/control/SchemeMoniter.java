@@ -36,7 +36,6 @@ public class SchemeMoniter extends Thread {
 
         Crawling cling=null;
         boolean canRun=true;
-        boolean etlRun=true;
         while(canRun) {
             try {
                 String schemeDesc=scheme.getSchemeName()+"::"+(scheme.getProcessNum()+1);

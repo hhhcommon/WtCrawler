@@ -103,7 +103,6 @@ public class Crawling extends Thread {
             this.controller.setCustomData(customDataMap);
             for (String url: seeds) this.controller.addSeed(url);
             this.controller.start(wc.getClass(), scheme.getThreadNum());
-            this.controller.setPageFetcher(pageFetcher);
         } catch (Exception e) {
             e.printStackTrace();
         }

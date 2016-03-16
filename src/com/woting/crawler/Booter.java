@@ -1,17 +1,12 @@
 package com.woting.crawler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.woting.crawler.CrawlerConstants;
 import com.woting.crawler.core.scheme.control.MainController;
 import com.woting.crawler.ext.SpringShell;
-
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -60,9 +55,6 @@ public class Booter {
         Logger logger = LoggerFactory.getLogger(Booter.class);
         logger.info("内容抓取，环境初始化开始");
         logger.info("系统运行路径 [{}]", (SystemCache.getCache(CrawlerConstants.APP_PATH)).getContent());
-
-        //准备已访问列表，用SystemCache实现对工程上下文信息的存储
-        SystemCache.setCache(new CacheEle<Map<String, Map<String, String>>>(CrawlerConstants.MAP_VISITEDPAGE, "已访问页面", new HashMap<String, Map<String, String>>()));
 
         //Spring环境加载
         long beginSpring=System.currentTimeMillis();

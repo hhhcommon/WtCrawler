@@ -1,4 +1,4 @@
-package com.woting.crawler.scheme.XMLY;
+package com.woting.crawler.scheme.XMLY.crawl;
 
 import java.util.HashMap;
 import java.util.Map;
