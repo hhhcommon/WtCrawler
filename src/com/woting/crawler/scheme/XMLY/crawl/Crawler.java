@@ -51,20 +51,20 @@ public class Crawler extends WebCrawler {
         //url判断
         if (!href.startsWith("http://www.ximalaya.com")) return false;
         if (ParseUtils.getType(href)<=0) return false;
-        //是否已经访问过了
-        if (s.getCrawlBatch().isVisited(href)) return false;
         return true;
     }
 
     @Override
     public void visit(Page page) {
         try {
-            Thread.sleep(SpiritRandom.getRandom(new Random(), 100, 10000));
+            Thread.sleep(SpiritRandom.getRandom(new Random(), 10, 100));
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
         String href = page.getWebURL().getURL().toLowerCase();
         href=href.trim().toLowerCase();
+        //是否已经处理过了
+        if (s.getCrawlBatch().isVisited(href)) return;
 
         int pageType=ParseUtils.getType(href);
         if (pageType>0) {
