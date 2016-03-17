@@ -118,6 +118,13 @@ public class Crawler extends WebCrawler {
             parseData.put("descript", "");
             parseData.put("extInfo", "");
             */
+            //类型处理
+            int flag=0;
+            if ((pageType==1)&&(parseData.get("seqId")==null||(parseData.get("seqId")+"").trim().length()==0)) flag=2;
+            else
+            if ((pageType==2)&&(parseData.get("playUrl")==null||(parseData.get("playUrl")+"").trim().length()==0)) flag=2;
+            parseData.put("flag", flag);
+
             synchronized(s.getCrawlBatch().lock) {
                 if (!s.getCrawlBatch().isVisited(href)) {
                     xmlyService.insertOrig(parseData);

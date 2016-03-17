@@ -79,30 +79,46 @@ public class Crawling extends Thread {
             customDataMap.put("scheme", this.scheme);
             customDataMap.put("storeUrl", storeUrl);
 
-            //创建批次信息
+            boolean canRun=true;//是否执行
+            //创建批次信息，并根据逻辑清洗管理数据
             CrawlBatch cBatch=sService.getBatch(scheme.getId(), this.curNum);
-            if (cBatch==null) {
-                cBatch=new CrawlBatch();
-                cBatch.setScheme(scheme);
-                cBatch.setSchemeNum(this.curNum);
-                cBatch.setBeginTime(new Timestamp(System.currentTimeMillis()));
-                cBatch.setEndTime(new Timestamp(System.currentTimeMillis()));
-                sService.insertBatch(cBatch);
-            } else {//获取上次抓取内容
-                cBatch.setScheme(scheme);
-                sService.initVisitedUrl(cBatch);
+            while (cBatch!=null&&cBatch.getFlag()==1) {
+                cBatch=sService.getBatch(scheme.getId(), this.curNum++);
             }
-            scheme.setCrawlBatch(cBatch);
+            if (scheme.getCrawlType()>0&&this.curNum>scheme.getCrawlType()) {
+                canRun=false;
+                this.curNum=scheme.getCrawlType();
+                logger.debug("[{}]方案已执行完毕，无须执行"+scheme.getSchemeName());
+            }
+            if (this.curNum>(scheme.getProcessNum()+1)) {//更新方案信息
+                scheme.setProcessNum(this.curNum-1);
+                sService.updateScheme(scheme);
+            }
 
-            CrawlConfig cnf = new CrawlConfig();
-            cnf.setCrawlStorageFolder(dbPath);
-            String[] seeds=scheme.getFetchSeeds().split(" ");
-            WebCrawler wc=(WebCrawler)(Class.forName(scheme.getClassName()).newInstance());
-            PageFetcher pageFetcher = new PageFetcher(cnf);
-            this.controller = new CrawlController(cnf, pageFetcher, new RobotstxtServer(new RobotstxtConfig(), pageFetcher));
-            this.controller.setCustomData(customDataMap);
-            for (String url: seeds) this.controller.addSeed(url);
-            this.controller.start(wc.getClass(), scheme.getThreadNum());
+            if (canRun) {
+                if (cBatch==null) {
+                    cBatch=new CrawlBatch();
+                    cBatch.setScheme(scheme);
+                    cBatch.setSchemeNum(this.curNum);
+                    cBatch.setBeginTime(new Timestamp(System.currentTimeMillis()));
+                    cBatch.setEndTime(new Timestamp(System.currentTimeMillis()));
+                    sService.insertBatch(cBatch);
+                } else {//获取上次抓取内容
+                    cBatch.setScheme(scheme);
+                    sService.initVisitedUrl(cBatch);
+                }
+                scheme.setCrawlBatch(cBatch);
+
+                CrawlConfig cnf = new CrawlConfig();
+                cnf.setCrawlStorageFolder(dbPath);
+                String[] seeds=scheme.getFetchSeeds().split(" ");
+                WebCrawler wc=(WebCrawler)(Class.forName(scheme.getClassName()).newInstance());
+                PageFetcher pageFetcher = new PageFetcher(cnf);
+                this.controller = new CrawlController(cnf, pageFetcher, new RobotstxtServer(new RobotstxtConfig(), pageFetcher));
+                this.controller.setCustomData(customDataMap);
+                for (String url: seeds) this.controller.addSeed(url);
+                this.controller.start(wc.getClass(), scheme.getThreadNum());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

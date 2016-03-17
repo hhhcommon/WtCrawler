@@ -23,7 +23,7 @@
       <if test="tags!=null">tags,</if>
       <if test="descript!=null">descript,</if>
       <if test="extInfo!=null">extInfo,</if>
-      flag,
+      <if test="flag!=null">flag,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
@@ -44,7 +44,7 @@
       <if test="tags!=null">#{tags,jdbcType=VARCHAR},</if>
       <if test="descript!=null">#{descript,jdbcType=VARCHAR},</if>
       <if test="extInfo!=null">#{extInfo,jdbcType=VARCHAR},</if>
-      0,
+      <if test="flag!=null">#{flag,jdbcType=INTEGER},</if>
     </trim>
   </insert>
 </mapper>

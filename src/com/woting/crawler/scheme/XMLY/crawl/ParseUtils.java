@@ -53,9 +53,9 @@ public abstract class ParseUtils {
             eles=doc.select("div.personal_body").select("div.left").select("img");
             if (eles!=null&&!eles.isEmpty()) {
                 e=eles.get(0);
-                parseData.put("seqName", e.attr("alt"));
-                extInfo.put("seqLageImg", e.attr("popsrc"));
-                parseData.put("imgUrl", e.attr("src"));
+                parseData.put("seqName", e.attr("alt").trim());
+                extInfo.put("seqLageImg", e.attr("popsrc").trim());
+                parseData.put("imgUrl", e.attr("src").trim());
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //类别
@@ -63,8 +63,8 @@ public abstract class ParseUtils {
             eles=doc.select("div.detailContent_category");
             if (eles!=null&&!eles.isEmpty()) {
                 e=eles.get(0);
-                parseData.put("catalog", e.select("a").get(0).html());
-                parseData.put("playUrl", e.select("a").get(0).attr("href"));
+                parseData.put("catalog", e.select("a").get(0).html().trim());
+                parseData.put("playUrl", e.select("a").get(0).attr("href").trim());
                 String lastUpdateDay=e.select("span").html();
                 if (!StringUtils.isNullOrEmptyOrSpace(lastUpdateDay)) {
                     lastUpdateDay=lastUpdateDay.substring(lastUpdateDay.lastIndexOf(":")+1);
@@ -83,7 +83,7 @@ public abstract class ParseUtils {
                     tags+=","+e.select("span").html();
                 }
             }
-            if (tags.length()>0) parseData.put("tags", tags.substring(1));
+            if (tags.length()>0) parseData.put("tags", tags.substring(1).trim());
         } catch(Exception ex) {ex.printStackTrace();}
         //播放数
         try {
@@ -96,19 +96,21 @@ public abstract class ParseUtils {
         try {
             eles=doc.select("div.detailContent_intro");
             if (eles!=null&&!eles.isEmpty()) {
-                parseData.put("descript", eles.select("div.mid_intro").select("article").get(0).html());
-                extInfo.put("seqDescn", eles.select("div.rich_intro").select("article").get(0).html());
+                parseData.put("descript", eles.select("div.mid_intro").select("article").get(0).html().trim());
+                extInfo.put("seqDescn", eles.select("div.rich_intro").select("article").get(0).html().trim());
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //专辑
         try {
             //声音数
             eles=doc.select("span.albumSoundcount");
-            extInfo.put("seqCount", ParseUtils.getFirstNum(eles.html()));
-            //eles=doc.select("div.personal_body").select("div.detailContent").select("div.c1").select("div.right").select("a.shareLink shareLink2");
-            eles=doc.select("a.shareLink");
-            extInfo.put("zhuboId", eles.get(0).attr("album_uid"));
-            parseData.put("seqId", eles.get(0).attr("album_id"));
+            if (eles!=null&&!eles.isEmpty()) {
+                extInfo.put("seqCount", ParseUtils.getFirstNum(eles.html()));
+                //eles=doc.select("div.personal_body").select("div.detailContent").select("div.c1").select("div.right").select("a.shareLink shareLink2");
+                eles=doc.select("a.shareLink");
+                extInfo.put("zhuboId", eles.get(0).attr("album_uid").trim());
+                parseData.put("seqId", eles.get(0).attr("album_id").trim());
+            }
         } catch(Exception ex) {ex.printStackTrace();}
         //扩展内容
         try {
@@ -134,9 +136,9 @@ public abstract class ParseUtils {
             eles=doc.select("img[sound_popsrc]");
             if (eles!=null&&!eles.isEmpty()) {
                 e=eles.get(0);
-                parseData.put("assetId", e.attr("sound_popsrc"));
-                parseData.put("assetName", e.attr("alt"));
-                parseData.put("imgUrl", e.attr("src"));
+                parseData.put("assetId", e.attr("sound_popsrc").trim());
+                parseData.put("assetName", e.attr("alt").trim());
+                parseData.put("imgUrl", e.attr("src").trim());
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //声音
@@ -158,8 +160,8 @@ public abstract class ParseUtils {
             eles=doc.select("div.detailContent_category");
             if (eles!=null&&!eles.isEmpty()) {
                 e=eles.get(0);
-                parseData.put("catalog", e.select("a").get(0).html());
-                extInfo.put("seqUrl", e.select("a").get(0).attr("href"));
+                parseData.put("catalog", e.select("a").get(0).html().trim());
+                extInfo.put("seqUrl", e.select("a").get(0).attr("href").trim());
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //标签
@@ -186,7 +188,7 @@ public abstract class ParseUtils {
         try {
             eles=doc.select("div.detailContent_intro");
             if (eles!=null&&!eles.isEmpty()) {
-                parseData.put("descript", eles.get(0).select("article").get(0).html());
+                parseData.put("descript", eles.get(0).select("article").get(0).html().trim());
             }
         } catch(Exception ex) {ex.printStackTrace();}
         //专辑
@@ -198,13 +200,13 @@ public abstract class ParseUtils {
                     e=eles.first();
                     if (e!=null) {
                         e=e.select("div.right").get(0);
-                        parseData.put("seqName", e.select("a").get(0).attr("title"));
+                        parseData.put("seqName", e.select("a").get(0).attr("title").trim());
                         String s=e.select("a").get(0).attr("href");
                         if (s.startsWith("/")) s=s.substring(1);
                         String[] _s=s.split("/");
                         if (_s.length==3) {
-                            extInfo.put("zhuboId", _s[0]);
-                            parseData.put("seqId", _s[2]);
+                            extInfo.put("zhuboId", _s[0].trim());
+                            parseData.put("seqId", _s[2].trim());
                             extInfo.put("seqCount", ParseUtils.getFirstNum(e.select("span").first().html()));
                         }
                     }
