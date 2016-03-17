@@ -71,6 +71,9 @@ public class Crawler extends WebCrawler {
             logger.info("分析网页：{}", href);
             //保存文件
             if (needStoreWeb) {
+                if (href.indexOf("?")!=-1) {
+                    href=href.substring(0, href.indexOf("?"))+"("+href.substring(href.indexOf("?")+1)+")";
+                }
                 String fileName=tempStorePath+href.substring("http://www.ximalaya.com".length());
                 if (fileName.endsWith("/")) fileName=fileName.substring(0, fileName.length()-1);
                 fileName+=".html";

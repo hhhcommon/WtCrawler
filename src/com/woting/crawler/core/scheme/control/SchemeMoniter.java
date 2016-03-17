@@ -122,7 +122,11 @@ public class SchemeMoniter extends Thread {
                     controller = new CrawlController(cnf, pageFetcher, new RobotstxtServer(new RobotstxtConfig(), pageFetcher));
                     controller.setCustomData(customDataMap);
                     for (String url: seeds) controller.addSeed(url);
-                    controller.start(wc.getClass(), scheme.getThreadNum());
+                    new Thread() {
+                        public void run() {
+                            controller.start(wc.getClass(), scheme.getThreadNum());
+                        }
+                    }.start();
 
                     //改写抓取情况，半分钟更新1次
                     int i=0;
