@@ -113,8 +113,6 @@ public class SchemeService {
 
     /**
      * 初始化批次数据中的已访问UrlMap，这个Map可能很大
-     * @param id 方案Id
-     * @param curNum 当前批次号
      * @param cBatch 批次数据，本处理的的返回值就在这个数据中
      */
     public void initVisitedUrl(CrawlBatch cBatch) {
@@ -125,13 +123,13 @@ public class SchemeService {
         long count=batchDao.getCount("orgiCount", keyM);
         long hasCount=0;
         int pageNumber=0, pageSize=1000;
-        while (hasCount<count) {
+        while (hasCount<count+pageSize) {
             Page<Map<String,Object>> page = batchDao.pageQueryAutoTranform("orgiCount", "getSchemeBatchVisitedList", keyM, pageNumber, pageSize);
             for (Map<String,Object> one: page.getResult()) {
                 cBatch.addVisitedUrl(one.get("visitUrl")+"");
             }
             pageNumber++;
-            hasCount+=1000;
+            hasCount+=pageSize;
         }
     }
 
