@@ -106,8 +106,9 @@ public abstract class ParseUtils {
             eles=doc.select("span.albumSoundcount");
             if (eles!=null&&!eles.isEmpty()) {
                 extInfo.put("seqCount", ParseUtils.getFirstNum(eles.html()));
-                //eles=doc.select("div.personal_body").select("div.detailContent").select("div.c1").select("div.right").select("a.shareLink shareLink2");
-                eles=doc.select("a.shareLink");
+            }
+            eles=doc.select("a.shareLink");
+            if (eles!=null&&!eles.isEmpty()) {
                 extInfo.put("zhuboId", eles.get(0).attr("album_uid").trim());
                 parseData.put("seqId", eles.get(0).attr("album_id").trim());
             }
