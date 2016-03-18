@@ -8,12 +8,12 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
-import com.spiritdata.framework.core.model.Page;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.scheme.model.CrawlBatch;
 import com.woting.crawler.core.scheme.model.Scheme;
@@ -111,27 +111,27 @@ public class SchemeService {
         return ret;
     }
 
-    /**
-     * 初始化批次数据中的已访问UrlMap，这个Map可能很大
-     * @param cBatch 批次数据，本处理的的返回值就在这个数据中
-     */
-    public void initVisitedUrl(CrawlBatch cBatch) {
-        Map<String, Object> keyM=new HashMap<String, Object>();
-        keyM.put("schemeId", cBatch.getScheme().getId());
-        keyM.put("schemeNum", cBatch.getSchemeNum());
-        keyM.put("orgiTable", cBatch.getScheme().getOrigTableName());
-        long count=batchDao.getCount("orgiCount", keyM);
-        long hasCount=0;
-        int pageNumber=0, pageSize=1000;
-        while (hasCount<count+pageSize) {
-            Page<Map<String,Object>> page = batchDao.pageQueryAutoTranform("orgiCount", "getSchemeBatchVisitedList", keyM, pageNumber, pageSize);
-            for (Map<String,Object> one: page.getResult()) {
-                cBatch.addVisitedUrl(one.get("visitUrl")+"");
-            }
-            pageNumber++;
-            hasCount+=pageSize;
-        }
-    }
+//    /**
+//     * 初始化批次数据中的已访问UrlMap，这个Map可能很大
+//     * @param cBatch 批次数据，本处理的的返回值就在这个数据中
+//     */
+//    public void initVisitedUrl(CrawlBatch cBatch) {
+//        Map<String, Object> keyM=new HashMap<String, Object>();
+//        keyM.put("schemeId", cBatch.getScheme().getId());
+//        keyM.put("schemeNum", cBatch.getSchemeNum());
+//        keyM.put("orgiTable", cBatch.getScheme().getOrigTableName());
+//        long count=batchDao.getCount("orgiCount", keyM);
+//        long hasCount=0;
+//        int pageNumber=0, pageSize=1000;
+//        while (hasCount<count+pageSize) {
+//            Page<Map<String,Object>> page = batchDao.pageQueryAutoTranform("orgiCount", "getSchemeBatchVisitedList", keyM, pageNumber, pageSize);
+//            for (Map<String,Object> one: page.getResult()) {
+//                cBatch.addVisitedUrl(one.get("visitUrl")+"");
+//            }
+//            pageNumber++;
+//            hasCount+=pageSize;
+//        }
+//    }
 
     /**
      * 结束批次的信息写入数据库
@@ -152,5 +152,25 @@ public class SchemeService {
         param.put("orgiTable", scheme.getOrigTableName());
         param.put("duration", System.currentTimeMillis()-scheme.getCrawlBatch().getBeginTime().getTime());
         batchDao.update("batchProgress4Fetch", param);
+    }
+
+    /**
+     * 判断是否访问过此Url
+     * @param url url
+     * @param id 方案Id
+     * @param schemeNum 方案批次号
+     * @param orgiTable 原数据表名
+     * @return 若访问过则返回True;
+     */
+    public boolean isVisited(String url, String id, int schemeNum, String orgiTable) {
+        try {
+            Map<String, Object> param=new HashMap<String, Object>();
+            param.put("orgiTable", orgiTable);
+            param.put("id", DigestUtils.md5Hex(id+"::"+schemeNum+"::"+url));
+            return batchDao.getCount("existVisitUrl", param)>0;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

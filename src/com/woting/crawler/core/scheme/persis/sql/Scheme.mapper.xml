@@ -109,7 +109,6 @@
       <if test="flag!=null and flag!=0">#{flag,jdbcType=INTEGER},</if>
     </trim>
   </insert>
-
   <!-- 更新 方案当前运行批次进度情况 -->
   <update id="batchProgress4Fetch" parameterType="java.util.Map">
     update wt_c_Batch set duration=${duration},endTime=CURRENT_TIMESTAMP,visitCount=(select count(*) from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}) where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
@@ -120,11 +119,16 @@
   </update>
 
   <!-- 原始数据=============================== -->
+  <!-- 
   <select id="orgiCount" resultType="java.lang.Integer" parameterType="java.util.Map">
     select count(*) from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
   </select>
   <select id="getSchemeBatchVisitedList" resultType="java.util.Map" parameterType="java.util.Map">
     select * from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+  </select> -->
+  <!-- 判断 是否已访问过 -->
+  <select id="existVisitUrl" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from ${orgiTable} where id=#{id,jdbcType=VARCHAR}
   </select>
   
 </mapper>

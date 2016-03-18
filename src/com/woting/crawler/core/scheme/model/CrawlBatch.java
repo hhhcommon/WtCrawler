@@ -7,14 +7,10 @@ import java.util.Map;
 import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.woting.crawler.core.scheme.persis.po.CrawlBatchPo;
+import com.woting.crawler.core.scheme.service.SchemeService;
 
 public class CrawlBatch implements ModelSwapPo {
     final public Object lock=new Object();
-
-    public CrawlBatch() {
-        super();
-        this.hasVisitedUrl=new HashMap<String,String>();
-    }
 
     private int schemeNum; //该方案下的序号
     private Timestamp beginTime; //方案执行开始时间
@@ -26,8 +22,7 @@ public class CrawlBatch implements ModelSwapPo {
     private int delCount=0; //删除记录数
     private int flag=0; //抓取状态：0正在抓取；1抓取完成
 
-    private Map<String, String> hasVisitedUrl; //抓取状态：0正在抓取；1抓取完成
-
+    private SchemeService schemeService; //方案服务类
     private Scheme scheme; //抓取方案，这个批处理抓取任务所依据的方案
 
     public int getSchemeNum() {
@@ -90,6 +85,9 @@ public class CrawlBatch implements ModelSwapPo {
     public void setScheme(Scheme scheme) {
         this.scheme = scheme;
     }
+    public void setSchemeService(SchemeService sService) {
+        this.schemeService = sService;
+    }
 
     @Override
     public void buildFromPo(Object po) {
@@ -124,10 +122,6 @@ public class CrawlBatch implements ModelSwapPo {
         return ret;
     }
 
-    public void addVisitedUrl(String url) {
-        this.hasVisitedUrl.put(url, "0");
-    }
-
     /**
      * 判断Url是否已经被访问
      * @param url  
@@ -135,7 +129,7 @@ public class CrawlBatch implements ModelSwapPo {
      */
     public boolean isVisited(String url) {
         synchronized(lock) {
-            return this.hasVisitedUrl.get(url)!=null;
+            return this.schemeService.isVisited(url, this.getScheme().getId(), this.getSchemeNum(), this.scheme.getOrigTableName());
         }
     }
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +87,7 @@ public class Crawler extends WebCrawler {
 
             //分析内容
             Map<String, Object> parseData=new HashMap<String, Object>();
-            parseData.put("id", SequenceUUID.getUUIDSubSegment(4));
+            parseData.put("id", DigestUtils.md5Hex(this.s.getId()+"::"+(s.getProcessNum()+1)+"::"+href));
             parseData.put("schemeId", s.getId());
             parseData.put("schemeNum", s.getProcessNum()+1);
             parseData.put("visitUrl", href);
@@ -130,7 +131,6 @@ public class Crawler extends WebCrawler {
             synchronized(s.getCrawlBatch().lock) {
                 if (!s.getCrawlBatch().isVisited(href)) {
                     xmlyService.insertOrig(parseData);
-                    s.getCrawlBatch().addVisitedUrl(href);
                 }
             }
         }

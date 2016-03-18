@@ -99,17 +99,16 @@ public class SchemeMoniter extends Thread {
                     curNum=scheme.getCrawlType();
                     logger.info("[{}]方案已执行完毕，无须执行",scheme.getSchemeName());
                 } else {
-                    if (cBatch==null) {
+                    if (cBatch!=null) cBatch.setScheme(scheme);
+                    else {
                         cBatch=new CrawlBatch();
-                        cBatch.setScheme(scheme);
                         cBatch.setSchemeNum(curNum);
                         cBatch.setBeginTime(new Timestamp(System.currentTimeMillis()));
                         cBatch.setEndTime(new Timestamp(System.currentTimeMillis()));
-                        sService.insertBatch(cBatch);
-                    } else {//获取上次抓取内容
                         cBatch.setScheme(scheme);
-                        sService.initVisitedUrl(cBatch);
+                        sService.insertBatch(cBatch);
                     }
+                    cBatch.setSchemeService(sService);
                     scheme.setCrawlBatch(cBatch);
 
                     long startTime=System.currentTimeMillis();
