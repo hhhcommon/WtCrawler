@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.woting.crawler.CrawlerConstants;
-import com.woting.crawler.core.scheme.control.MainController;
+import com.woting.crawler.core.scheme.control.SchemeController;
 import com.woting.crawler.ext.SpringShell;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
@@ -62,8 +62,13 @@ public class Booter {
         logger.info("加载Spring配置，用时[{}]毫秒", System.currentTimeMillis()-beginSpring);
         logger.info("内容抓取，环境初始化结束，共用时[{}]毫秒", System.currentTimeMillis()-beginTime);
 
-        //开始运行，抓取
-        MainController mc= new MainController();
+        //开始运行
+        //1-抓取
+        SchemeController mc= new SchemeController();
+        mc.loadScheme(1, null);
+        mc.runningScheme();
+        //2-ETL1
+        SchemeController mc= new SchemeController();
         mc.loadScheme(1, null);
         mc.runningScheme();
     }

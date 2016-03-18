@@ -15,8 +15,8 @@ import com.woting.crawler.ext.SpringShell;
  * 主控制程序
  * @author wanghui
  */
-public class MainController {
-    private Logger logger = LoggerFactory.getLogger(MainController.class);
+public class SchemeController {
+    private Logger logger = LoggerFactory.getLogger(SchemeController.class);
 
     private List<Scheme> activeSchemes;//活动的可处理的方案
 
