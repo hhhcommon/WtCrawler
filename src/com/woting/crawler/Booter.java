@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.woting.crawler.CrawlerConstants;
+import com.woting.crawler.core.etl1.control.Etl1Controller;
 import com.woting.crawler.core.scheme.control.SchemeController;
 import com.woting.crawler.ext.SpringShell;
 import ch.qos.logback.classic.LoggerContext;
@@ -66,10 +67,10 @@ public class Booter {
         //1-抓取
         SchemeController mc= new SchemeController();
         mc.loadScheme(1, null);
-        mc.runningScheme();
+//        mc.runningScheme();
         //2-ETL1
-        SchemeController mc= new SchemeController();
-        mc.loadScheme(1, null);
-        mc.runningScheme();
+        Etl1Controller ec= new Etl1Controller();
+        ec.loadEtl1(1, null);
+        ec.runningScheme();
     }
 }

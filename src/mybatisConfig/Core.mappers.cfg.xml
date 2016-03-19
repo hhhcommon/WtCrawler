@@ -4,15 +4,18 @@
 <configuration>
   <!-- 别名设置 -->
   <typeAliases>
-    <typeAlias alias="dictMaster" type="com.woting.crawler.core.persis.po.DictMasterPo"/>
-    <typeAlias alias="dictDetail" type="com.woting.crawler.core.persis.po.DictDetailPo"/>
     <typeAlias alias="source" type="com.woting.crawler.core.scheme.persis.po.SourcePo"/>
     <typeAlias alias="scheme" type="com.woting.crawler.core.scheme.persis.po.SchemePo"/>
     <typeAlias alias="batch" type="com.woting.crawler.core.scheme.persis.po.CrawlBatchPo"/>
+    <typeAlias alias="etl1config" type="com.woting.crawler.core.etl1.persis.po.Etl1ConfigPo"/>
+    <typeAlias alias="dictMaster" type="com.woting.crawler.core.persis.po.DictMasterPo"/>
+    <typeAlias alias="dictDetail" type="com.woting.crawler.core.persis.po.DictDetailPo"/>
   </typeAliases>
+  <!-- SQL文件设置 -->
   <mappers>
     <mapper resource="com/woting/crawler/core/persis/sql/DictMaster.mapper.xml"/>
     <mapper resource="com/woting/crawler/core/persis/sql/DictDetail.mapper.xml"/>
     <mapper resource="com/woting/crawler/core/scheme/persis/sql/Scheme.mapper.xml"/>
+    <mapper resource="com/woting/crawler/core/etl1/persis/sql/Etl1Config.mapper.xml"/>
   </mappers>
 </configuration>

@@ -65,11 +65,11 @@ public class SchemeService {
                 try {
                     ((WebCrawler)Class.forName(s.getClassName()).newInstance()).toString();
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                    throw new Wtcc1001CException("不合法的抓取方案：处理的Java必须是edu.uci.ics.crawler4j.crawler.WebCrawler的子类，所设置的类["+s.getClassName()+"]不合法", e);
+                    throw new Wtcc1001CException("不合法的抓取方案：处理的Java类必须是edu.uci.ics.crawler4j.crawler.WebCrawler的子类，所设置的类["+s.getClassName()+"]不合法", e);
                 }
                 retl.add(s);
             } catch(Exception e) {
-                logger.error("创建抓取方案对象失败：{}", e.getClass().getName()+"::"+e.getMessage());
+                logger.error("获得抓取方案对象失败：{}", e.getClass().getName()+"::"+e.getMessage());
             }
         }
         return retl;

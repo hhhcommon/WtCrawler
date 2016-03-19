@@ -111,7 +111,12 @@
   </insert>
   <!-- 更新 方案当前运行批次进度情况 -->
   <update id="batchProgress4Fetch" parameterType="java.util.Map">
-    update wt_c_Batch set duration=${duration},endTime=CURRENT_TIMESTAMP,visitCount=(select count(*) from ${orgiTable} where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}) where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
+    update wt_c_Batch set
+      duration=${duration},
+      endTime=CURRENT_TIMESTAMP,
+      visitCount=${visitCount},
+      insertCount=${insertCount}
+    where schemeId=#{schemeId,jdbcType=VARCHAR} and schemeNum=#{schemeNum,jdbcType=INTEGER}
   </update>
   <!-- 完成 方案的抓取批次 -->
   <update id="finishedBatch" parameterType="java.util.Map">

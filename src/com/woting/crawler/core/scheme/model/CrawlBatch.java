@@ -1,8 +1,7 @@
 package com.woting.crawler.core.scheme.model;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
@@ -16,8 +15,8 @@ public class CrawlBatch implements ModelSwapPo {
     private Timestamp beginTime; //方案执行开始时间
     private Timestamp endTime; //方案执行结束时间
     private int duration=0; //执行总时间，毫秒数
-    private int visitCount=0; //总访问网页数
-    private int insertCount=0; //插入记录数
+    private AtomicInteger visitCount=new AtomicInteger(0); //总访问网页数
+    private AtomicInteger insertCount=new AtomicInteger(0); //插入记录数
     private int updateCount=0; //更新记录数
     private int delCount=0; //删除记录数
     private int flag=0; //抓取状态：0正在抓取；1抓取完成
@@ -50,16 +49,22 @@ public class CrawlBatch implements ModelSwapPo {
         this.duration = duration;
     }
     public int getVisitCount() {
-        return visitCount;
+        return visitCount.intValue();
     }
-    public void setVisitCount(int visitCount) {
-        this.visitCount = visitCount;
+    public int visitCount_IncrementAndGet() {
+        return visitCount.incrementAndGet();
+    }
+    private void setVisitCount(int visitCount) {
+        this.visitCount=new AtomicInteger(visitCount);
     }
     public int getInsertCount() {
-        return insertCount;
+        return insertCount.intValue();
     }
-    public void setInsertCount(int insertCount) {
-        this.insertCount = insertCount;
+    public int insertCount_IncrementAndGet() {
+        return insertCount.incrementAndGet();
+    }
+    private void setInsertCount(int insertCount) {
+        this.insertCount=new AtomicInteger(insertCount);
     }
     public int getUpdateCount() {
         return updateCount;

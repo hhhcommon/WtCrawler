@@ -15,7 +15,6 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.SpiritRandom;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.scheme.model.Scheme;
@@ -69,6 +68,7 @@ public class Crawler extends WebCrawler {
 
         int pageType=ParseUtils.getType(href);
         if (pageType>0) {
+            s.getCrawlBatch().visitCount_IncrementAndGet();
             logger.info("分析网页：{}", href);
             //保存文件
             if (needStoreWeb) {
@@ -130,6 +130,7 @@ public class Crawler extends WebCrawler {
             parseData.put("flag", flag);
             synchronized(s.getCrawlBatch().lock) {
                 if (!s.getCrawlBatch().isVisited(href)) {
+                    s.getCrawlBatch().insertCount_IncrementAndGet();
                     xmlyService.insertOrig(parseData);
                 }
             }

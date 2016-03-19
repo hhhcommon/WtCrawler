@@ -20,7 +20,7 @@ public class SchemePo extends BaseObject {
     private String schemeName;//方案名称
     private String schemeDescn;//方案描述
 
-    private int isValidate=1;//若是文件方式，则是文件名称
+    private int isValidate=1;//是否生效：1生效;2无效
     private int crawlType=1;//抓取循环类型；1=只抓取1次，n抓取n次；0一直循环下去
     private String origTableName;//对应原始数据表名称
     private long intervalTime=0;//两次抓取之间的间隔时间，毫秒；<=0上次完成后，立即执行；>0上次执行完间隔的毫秒数

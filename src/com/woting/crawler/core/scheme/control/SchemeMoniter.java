@@ -134,7 +134,9 @@ public class SchemeMoniter extends Thread {
                         if (i++>30) {
                             i=0;
                             //写一次
-                            sService.updateBatchProgress4Fetch(scheme);
+                            synchronized(scheme.getCrawlBatch().lock) {
+                                sService.updateBatchProgress4Fetch(scheme);
+                            }
                         }
                     }
                     controller.waitUntilFinish();
@@ -145,8 +147,10 @@ public class SchemeMoniter extends Thread {
                     sService.updateBatchProgress4Fetch(scheme);//3更新批处理
                     long endTime=System.currentTimeMillis();
                     logger.info("结束运行：时间 <{}>", DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(endTime)));
-                    logger.info("从<{}>开始，到<{}>结束；所用时间：毫秒<{}>。", DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(startTime))
-                            ,DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(endTime)), endTime-startTime);
+                    logger.info("从<{}>开始，到<{}>结束；所用时间：毫秒<{}>。"
+                            , DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(startTime))
+                            , DateUtils.convert2LocalStr("yyyy-MM-dd HH:mm:ss:SSS", new Date(endTime))
+                            , endTime-startTime);
                     if (scheme.getCrawlType()>0&&scheme.getCrawlType()-scheme.getProcessNum()<=0) canRun=false;
                     if (canRun) { //间隔时间处理
                         sleep(scheme.getIntervalTime()<0?0:scheme.getIntervalTime());

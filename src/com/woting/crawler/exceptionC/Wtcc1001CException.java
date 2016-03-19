@@ -1,7 +1,7 @@
 package com.woting.crawler.exceptionC;
 
 /**
- * 不符合逻辑的抓取方案异常，内部码为1000，基本信息为‘非法可执行方案’
+ * 不符合逻辑的抓取方案异常，内部码为1001，基本信息为‘非法可执行方案’
  * @author wh
  */
 public class Wtcc1001CException extends WtccCException {

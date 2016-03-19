@@ -181,9 +181,8 @@ public class Scheme implements ModelSwapPo {
     public void buildFromPo(Object po) {
         if (po==null) throw new Plat0006CException("Po对象为空，无法从空对象得到概念/逻辑对象！");
         if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取方案对象！");
-        SchemePo _po = (SchemePo)po;
-        if (!(po instanceof SchemePo)) throw new Plat0006CException("Po对象不是SchemePo的实例，无法从此对象构建抓取方案对象！");
 
+        SchemePo _po = (SchemePo)po;
         if (_po.getIsValidate()!=1) throw new Wtcc1001CException("无效抓取方案，无需转换");
 
         this.setId(_po.getId());
