@@ -1,4 +1,4 @@
-package com.woting.crawler.core.wtcm.model;
+package com.woting.cm.core.dict.model;
 
 import com.spiritdata.framework.core.model.tree.TreeNode;
 

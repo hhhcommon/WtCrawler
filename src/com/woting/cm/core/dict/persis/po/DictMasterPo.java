@@ -1,4 +1,4 @@
-package com.woting.crawler.core.wtcm.persis.po;
+package com.woting.cm.core.dict.persis.po;
 
 import java.sql.Timestamp;
 import com.spiritdata.framework.core.model.BaseObject;

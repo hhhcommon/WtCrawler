@@ -1,4 +1,4 @@
-package com.woting.crawler.core.wtcm.model;
+package com.woting.cm.core.dict.model;
 
 public class RefDict {
     private String dmId; //字典组Id

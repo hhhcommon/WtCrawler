@@ -15,7 +15,7 @@ import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.etl1.Etl1Process;
 import com.woting.crawler.core.etl1.model.Etl1Config;
 import com.woting.crawler.core.etl1.persis.po.Etl1ConfigPo;
-import com.woting.crawler.exceptionC.Wtcc1002CException;
+import com.woting.exceptionC.Wtcc1002CException;
 
 @Service
 public class Etl1Service {

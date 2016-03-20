@@ -16,13 +16,10 @@ import com.spiritdata.framework.core.model.Page;
 public class XmlyService {
     @Resource(name="defaultDAO")
     private MybatisDAO<BaseObject> xmlyDao;
-    @Resource(name="defaultDAO_CM")
-    private MybatisDAO<BaseObject> s2cDao;
 
     @PostConstruct
     public void initParam() {
         xmlyDao.setNamespace("C_XMLY");
-        s2cDao.setNamespace("S2C_XMLY");
     }
 
     /**

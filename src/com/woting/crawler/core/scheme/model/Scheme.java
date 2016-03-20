@@ -7,8 +7,8 @@ import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.scheme.persis.po.SchemePo;
-import com.woting.crawler.exceptionC.Wtcc1000CException;
-import com.woting.crawler.exceptionC.Wtcc1001CException;
+import com.woting.exceptionC.Wtcc1000CException;
+import com.woting.exceptionC.Wtcc1001CException;
 
 /**
  * 抓取方案。注意方案名称和抓取源不能同时相等

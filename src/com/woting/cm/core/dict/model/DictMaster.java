@@ -1,4 +1,4 @@
-package com.woting.crawler.core.wtcm.model;
+package com.woting.cm.core.dict.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -8,7 +8,7 @@ import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.ChineseCharactersUtils;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.crawler.core.wtcm.persis.po.DictMasterPo;
+import com.woting.cm.core.dict.persis.po.DictMasterPo;
 
 /**
  * 字典组

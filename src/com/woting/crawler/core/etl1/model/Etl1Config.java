@@ -7,7 +7,7 @@ import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.crawler.core.etl1.persis.po.Etl1ConfigPo;
-import com.woting.crawler.exceptionC.Wtcc1002CException;
+import com.woting.exceptionC.Wtcc1002CException;
 
 public class Etl1Config implements ModelSwapPo {
     private static final long serialVersionUID = -2128620688164591754L;

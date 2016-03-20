@@ -1,4 +1,4 @@
-package com.woting.crawler.exceptionC;
+package com.woting.exceptionC;
 
 /**
  * 数据关系异常，内部码为1000，基本信息为‘数据关系’

@@ -1,4 +1,4 @@
-package com.woting.crawler.exceptionC;
+package com.woting.exceptionC;
 
 /**
  * 不符合逻辑的抓取方案异常，内部码为1001，基本信息为‘非法可执行方案’

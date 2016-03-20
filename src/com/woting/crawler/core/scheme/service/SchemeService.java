@@ -20,7 +20,7 @@ import com.woting.crawler.core.scheme.model.Scheme;
 import com.woting.crawler.core.scheme.persis.po.CrawlBatchPo;
 import com.woting.crawler.core.scheme.persis.po.SchemePo;
 import com.woting.crawler.core.scheme.persis.po.SourcePo;
-import com.woting.crawler.exceptionC.Wtcc1001CException;
+import com.woting.exceptionC.Wtcc1001CException;
 
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 

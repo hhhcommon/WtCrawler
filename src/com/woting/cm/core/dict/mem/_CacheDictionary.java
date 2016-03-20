@@ -1,13 +1,13 @@
-package com.woting.crawler.core.wtcm.mem;
+package com.woting.cm.core.dict.mem;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.woting.crawler.core.wtcm.model.DictDetail;
-import com.woting.crawler.core.wtcm.model.DictMaster;
-import com.woting.crawler.core.wtcm.model.DictModel;
-import com.woting.crawler.core.wtcm.model.Owner;
+import com.woting.cm.core.dict.model.DictDetail;
+import com.woting.cm.core.dict.model.DictMaster;
+import com.woting.cm.core.dict.model.DictModel;
+import com.woting.cm.core.dict.model.Owner;
 
 /**
  * 所有者“字典数据”。把一个所有者的所有字典信息按结构进行存储。

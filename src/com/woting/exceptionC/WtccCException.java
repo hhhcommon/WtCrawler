@@ -1,4 +1,4 @@
-package com.woting.crawler.exceptionC;
+package com.woting.exceptionC;
 
 import com.spiritdata.framework.CodeException;
 

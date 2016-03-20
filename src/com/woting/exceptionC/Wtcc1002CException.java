@@ -1,4 +1,4 @@
-package com.woting.crawler.exceptionC;
+package com.woting.exceptionC;
 
 /**
  * 不符合逻辑的第一次Etl过程，内部码为1002，基本信息为‘非法Etl1配置’
