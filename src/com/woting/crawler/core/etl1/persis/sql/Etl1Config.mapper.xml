@@ -4,10 +4,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="C_ETL1">
   <!-- 第一次Etl配置 -->
-  <resultMap id="etlMap" type="etl1config">
-    <id      column="id"          property="id"          jdbcType="VARCHAR"/>
+  <resultMap id="etlMap" type="etl1Config">
+    <id      column="etlId"       property="id"          jdbcType="VARCHAR"/>
     <result  column="etl1Name"    property="etl1Name"    jdbcType="VARCHAR"/>
     <result  column="threadNum"   property="threadNum"   jdbcType="INTEGER"/>
+    <result  column="queueSize"   property="queueSize"   jdbcType="INTEGER"/>
     <result  column="isValidate"  property="isValidate"  jdbcType="INTEGER"/>
     <result  column="className"   property="className"   jdbcType="VARCHAR"/>
     <result  column="cTime"       property="CTime"       jdbcType="TIMESTAMP"/>

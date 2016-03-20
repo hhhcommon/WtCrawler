@@ -72,6 +72,12 @@ public class SchemePo extends BaseObject {
     public void setSchemeDescn(String schemeDescn) {
         this.schemeDescn = schemeDescn;
     }
+    public int getIsValidate() {
+        return isValidate;
+    }
+    public void setIsValidate(int isValidate) {
+        this.isValidate = isValidate;
+    }
     public int getCrawlType() {
         return crawlType;
     }
@@ -137,11 +143,5 @@ public class SchemePo extends BaseObject {
     }
     public void setCTime(Timestamp cTime) {
         CTime = cTime;
-    }
-    public int getIsValidate() {
-        return isValidate;
-    }
-    public void setIsValidate(int isValidate) {
-        this.isValidate = isValidate;
     }
 }

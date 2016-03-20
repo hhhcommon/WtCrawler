@@ -47,4 +47,12 @@
       <if test="flag!=null">#{flag,jdbcType=INTEGER},</if>
     </trim>
   </insert>
+
+  <select id="orgiCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(*) from XMLY_Original where flag=0
+  </select>
+  <select id="getTobeDealData" resultType="java.util.Map" parameterType="java.util.Map">
+    select * from XMLY_Original where flag=0
+    order by schemeId, schemeNum, cTime, assetId, seqId
+  </select>
 </mapper>

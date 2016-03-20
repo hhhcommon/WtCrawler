@@ -1,4 +1,4 @@
-package com.woting.crawler.core.persis.po;
+package com.woting.crawler.core.wtcm.persis.po;
 
 import java.sql.Timestamp;
 

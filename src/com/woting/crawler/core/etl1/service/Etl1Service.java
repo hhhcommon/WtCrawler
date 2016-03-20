@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.util.StringUtils;
@@ -16,6 +17,7 @@ import com.woting.crawler.core.etl1.model.Etl1Config;
 import com.woting.crawler.core.etl1.persis.po.Etl1ConfigPo;
 import com.woting.crawler.exceptionC.Wtcc1002CException;
 
+@Service
 public class Etl1Service {
     private Logger logger = LoggerFactory.getLogger(Etl1Service.class);
 
@@ -44,11 +46,11 @@ public class Etl1Service {
                 try {
                     ((Etl1Process)Class.forName(eConfig.getClassName()).newInstance()).toString();
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                    throw new Wtcc1002CException("不合法的抓取方案：处理的Java类必须实现com.woting.crawler.core.etl1.Etl1Process接口，所设置的类["+eConfig.getClassName()+"]不合法", e);
+                    throw new Wtcc1002CException("不合法的Etl1配置：处理的Java类必须实现com.woting.crawler.core.etl1.Etl1Process接口，所设置的类["+eConfig.getClassName()+"]不合法", e);
                 }
                 retl.add(eConfig);
             } catch(Exception e) {
-                logger.error("获得抓取方案对象失败：{}", e.getClass().getName()+"::"+e.getMessage());
+                logger.error("获得Etl1配置对象失败：{}", e.getClass().getName()+"::"+e.getMessage());
             }
         }
         return retl;
