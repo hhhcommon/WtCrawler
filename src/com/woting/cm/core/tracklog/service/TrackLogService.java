@@ -46,4 +46,12 @@ public class TrackLogService {
         }
         return null;
     }
+
+    /**
+     * 跟踪日志加入数据库
+     * @param tlog
+     */
+    public void insert(TrackLog tlog) {
+        trackLogDao.insert(tlog.convert2Po());
+    }
 }

@@ -47,6 +47,32 @@
       <if test="flag!=null">#{flag,jdbcType=INTEGER},</if>
     </trim>
   </insert>
+  <!-- 修改数据 根据主键-->
+  <update id="updateOrgi" parameterType="java.util.Map">
+    update XMLY_Original
+    <set>
+      <if test="schemeId!=null">schemeId=#{schemeId,jdbcType=VARCHAR},</if>
+      <if test="schemeNum!=null and schemeNum!=0">schemeNum=#{schemeNum,jdbcType=INTEGER},</if>
+      <if test="isValidate!=null and isValidate!=0">isValidate=#{isValidate,jdbcType=INTEGER},</if>
+      <if test="visitUrl=null">visitUrl=#{visitUrl,jdbcType=VARCHAR},</if>
+      <if test="parentUrl=null">parentUrl=#{parentUrl,jdbcType=VARCHAR},</if>
+      <if test="assetType!=null and assetType!=0">assetType=#{assetType,jdbcType=INTEGER},</if>
+      <if test="seqId=null">seqId=#{seqId,jdbcType=VARCHAR},</if>
+      <if test="seqName=null">seqName=#{seqName,jdbcType=VARCHAR},</if>
+      <if test="assetId=null">assetId=#{assetId,jdbcType=VARCHAR},</if>
+      <if test="assetName!=null">assetName=#{assetName,jdbcType=VARCHAR},</if>
+      <if test="playUrl!=null">playUrl=#{playUrl,jdbcType=VARCHAR},</if>
+      <if test="person!=null">person=#{person,jdbcType=VARCHAR},</if>
+      <if test="imgUrl!=null">imgUrl=#{imgUrl,jdbcType=VARCHAR},</if>
+      <if test="playCount!=null">playCount=#{playCount,jdbcType=VARCHAR},</if>
+      <if test="catalog!=null">catalog=#{catalog,jdbcType=VARCHAR},</if>
+      <if test="tags!=null">tags=#{tags,jdbcType=VARCHAR},</if>
+      <if test="descript!=null">descript=#{descript,jdbcType=VARCHAR},</if>
+      <if test="extInfo!=null">extInfo=#{extInfo,jdbcType=VARCHAR},</if>
+      <if test="CTime=null">cTime=#{CTime,jdbcType=TIMESTAMP},</if>
+    </set>
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
 
   <select id="orgiCount" resultType="java.lang.Integer" parameterType="java.util.Map">
     select count(*) from XMLY_Original where flag=0

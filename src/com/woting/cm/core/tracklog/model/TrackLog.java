@@ -14,7 +14,7 @@ public class TrackLog implements ModelSwapPo {
     private String id; //表ID
     private String tableName; //表名称
     private String objId; //表内记录Id
-    private int dataClass; //内容分类：1字典-分类;2字典-关键词;3单曲节目;4系列节目(包括与单曲的关系);5栏目;6各种其他关系
+    private int dataClass; //内容分类：0-其他(未知);1字典-分类;2字典-关键词;3单曲节目;4系列节目(包括与单曲的关系);5栏目;6各种其他关系
     private Owner owner; //源数据所有者
     private String data; //源数据内容，Json格式
     private String dataMd5; //源数据内容的,Json格式，用于比较

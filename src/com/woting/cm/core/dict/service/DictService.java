@@ -49,15 +49,15 @@ public class DictService {
             Map<String, Object> param=new HashMap<String, Object>();
             param.put("ownerType", "100");
             param.put("sortByClause", "id");
-            List<DictMasterPo> _l = dictMDao.queryForList(param);
-            if (_l==null||_l.size()==0) return null;
-            List<DictMaster> ret = new ArrayList<DictMaster>();
-            for (DictMasterPo dmp: _l) {
+            List<DictMasterPo> dmpol = dictMDao.queryForList(param);
+            if (dmpol==null||dmpol.size()==0) return null;
+            List<DictMaster> dml = new ArrayList<DictMaster>();
+            for (DictMasterPo dmp: dmpol) {
                 DictMaster dm = new DictMaster();
                 dm.buildFromPo(dmp);
-                ret.add(dm);
+                dml.add(dm);
             }
-            _cd.dmList =(ret.size()==0?null:ret);
+            _cd.dmList =(dml.size()==0?null:dml);
 
             //组装dictModelMap
             if (_cd.dmList!=null&&_cd.dmList.size()>0) {
@@ -68,19 +68,19 @@ public class DictService {
 
                 //构造单独的字典树
                 String tempDmId = "";
-                List<DictDetail> templ = new ArrayList<DictDetail>();
                 param.put("ownerId", "cm");
                 param.put("ownerType", "100");
-                List<DictDetailPo> _l2 = dictDDao.queryForList("getListByOnwer", param);
-                if (_l2==null||_l2.size()==0) return null;
-                List<DictDetail> ret2 = new ArrayList<DictDetail>();
-                for (DictDetailPo ddp: _l2) {
+                List<DictDetailPo> ddpol = dictDDao.queryForList("getListByOnwer", param);
+                if (ddpol==null||ddpol.size()==0) return null;
+                List<DictDetail> ddl = new ArrayList<DictDetail>();
+                for (DictDetailPo ddp: ddpol) {
                     DictDetail dd = new DictDetail();
                     dd.buildFromPo(ddp);
-                    ret2.add(dd);
+                    ddl.add(dd);
                 }
 
-                _cd.ddList=ret2.size()==0?null:ret2;//字典项列表，按照层级结果，按照排序的广度遍历树
+                List<DictDetail> templ = new ArrayList<DictDetail>();
+                _cd.ddList=(ddl.size()==0?null:ddl);//字典项列表，按照层级结果，按照排序的广度遍历树
                 if (_cd.ddList!=null&&_cd.ddList.size()>0) {
                     for (DictDetail dd: _cd.ddList) {
                         if (tempDmId.equals(dd.getMId())) templ.add(dd);

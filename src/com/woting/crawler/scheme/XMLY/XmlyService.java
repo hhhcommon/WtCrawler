@@ -31,6 +31,14 @@ public class XmlyService {
     }
 
     /**
+     * 修改原始数据
+     * @param parseData
+     */
+    public void updateOrig(Map<String, Object> parseData) {
+        xmlyDao.update("updateOrgi", parseData);
+    }
+
+    /**
      * 获取喜马拉雅抓取的原始数据
      * @param pageSize 每页数据量
      * @param pageNum 页数
