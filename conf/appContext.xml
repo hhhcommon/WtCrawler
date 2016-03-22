@@ -89,4 +89,7 @@
   <context:component-scan base-package="com.woting.crawler" use-default-filters="false">
     <context:include-filter type="regex" expression=".*.*Service"/>
   </context:component-scan>
+  <context:component-scan base-package="com.woting.cm" use-default-filters="false">
+    <context:include-filter type="regex" expression=".*.*Service"/>
+  </context:component-scan>
 </beans>

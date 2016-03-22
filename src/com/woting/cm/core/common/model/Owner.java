@@ -1,17 +1,28 @@
-package com.woting.cm.core.dict.model;
+package com.woting.cm.core.common.model;
 
 import com.spiritdata.framework.core.model.BaseObject;
 
 /**
  * 所有者对象，封装了ownerId和ownerType
- * 目前有ownerType=1我们自己的系统；2其他系统，对应表wt_Organize；ownerId对应wt_Organize中的ID
+ * <pre>
+ * ============================================
+ *     ownerType              ownerId
+ * --------------------------------------------
+ *   1xx   系统　
+ *     100 我们自己的系统　　cm/crawl/push等
+ *     101 其他系统　　　　　wt_Organize表中的Id  
+ *   2xx   用户
+ *     200 后台系统用户　　　plat_user中的用户Id
+ *     201 前端用户　　　　　wt_Member表中的用户Id（这个还没有做）
+ * ============================================
+ * </pre>
  * @author wh
  */
 public class Owner extends BaseObject {
     private static final long serialVersionUID = -1970271589243412626L;
 
-    private int ownerType; //模式所对应的所有者类型（1=自己的系统；2=其他系统；3=注册用户；4=非注册用户(session)）
-    private String ownerId; //所有者标识（可能是用户id，也可能是SessionID）若是1，则此为1，若为2，则wt_Organize；ownerId对应wt_Organize中的ID
+    private int ownerType;
+    private String ownerId;
 
     public Owner() {
         super();
@@ -56,7 +67,15 @@ public class Owner extends BaseObject {
         return true;
     }
 
-	@Override
+    /**
+     * 得到所有者的Key
+     * @return
+     */
+    public String getKey() {
+        return ownerId+"::"+ownerType;
+    }
+
+    @Override
 	public int hashCode() {
 		int retInt = 0;
 		String str = this.ownerId+":"+this.ownerType;

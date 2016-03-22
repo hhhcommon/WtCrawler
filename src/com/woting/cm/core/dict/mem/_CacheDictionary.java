@@ -7,12 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.woting.cm.core.dict.model.DictDetail;
 import com.woting.cm.core.dict.model.DictMaster;
 import com.woting.cm.core.dict.model.DictModel;
-import com.woting.cm.core.dict.model.Owner;
 
 /**
- * 所有者“字典数据”。把一个所有者的所有字典信息按结构进行存储。
- * 主要服务于缓存(或Session)、数据导入、数据质量分析。
- * 这里只对Session中的数据进行处理，不对持久化数据库进行处理。
+ * “字典数据”内容管理资源库的所有字典信息按结构进行存储。
  * 
  * @author wh
  */
@@ -21,18 +18,10 @@ public class _CacheDictionary {
     public List<DictMaster> dmList = null; //所有者字典组列表
     public List<DictDetail> ddList = null; //所有者字典项列表
 
-    private Owner owner;
-    public Owner getOwner() {
-        return owner;
-    }
-
     /**
      * 构造所有者处理单元
-     * @param ownerId 所有者类型
-     * @param ownerType 所有者Id
      */
-    public _CacheDictionary(Owner owner) {
-        this.owner=owner;
+    public _CacheDictionary() {
         dictModelMap=new ConcurrentHashMap<String, DictModel>();
     }
 

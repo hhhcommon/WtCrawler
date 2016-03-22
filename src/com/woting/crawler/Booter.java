@@ -6,8 +6,10 @@ import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.woting.crawler.CrawlerConstants;
 import com.woting.crawler.core.etl1.control.Etl1Controller;
+import com.woting.crawler.core.wtcm.service.LoadCacheService;
 import com.woting.crawler.core.scheme.control.SchemeController;
 import com.woting.crawler.ext.SpringShell;
+
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -56,11 +58,19 @@ public class Booter {
         Logger logger = LoggerFactory.getLogger(Booter.class);
         logger.info("内容抓取，环境初始化开始");
         logger.info("系统运行路径 [{}]", (SystemCache.getCache(CrawlerConstants.APP_PATH)).getContent());
+        logger.info("计算并加载运行目录，用时[{}]毫秒", System.currentTimeMillis()-beginTime);
 
         //Spring环境加载
-        long beginSpring=System.currentTimeMillis();
+        long _begin=System.currentTimeMillis();
         SpringShell.init();
-        logger.info("加载Spring配置，用时[{}]毫秒", System.currentTimeMillis()-beginSpring);
+        logger.info("加载Spring配置，用时[{}]毫秒", System.currentTimeMillis()-_begin);
+
+        //内容资源库环境加载
+        _begin=System.currentTimeMillis();
+        LoadCacheService loadCacheService=(LoadCacheService)SpringShell.getBean("loadCacheService");
+        loadCacheService.loadContent();
+        logger.info("加载内容资源库数据，用时[{}]毫秒", System.currentTimeMillis()-_begin);
+
         logger.info("内容抓取，环境初始化结束，共用时[{}]毫秒", System.currentTimeMillis()-beginTime);
 
         //开始运行

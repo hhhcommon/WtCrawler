@@ -8,6 +8,7 @@ import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.ChineseCharactersUtils;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
+import com.woting.cm.core.common.model.Owner;
 import com.woting.cm.core.dict.persis.po.DictMasterPo;
 
 /**
