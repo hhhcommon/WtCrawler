@@ -21,6 +21,7 @@ import com.woting.cm.core.dict.model.DictMaster;
 import com.woting.cm.core.dict.model.DictModel;
 import com.woting.cm.core.dict.persis.po.DictDetailPo;
 import com.woting.cm.core.dict.persis.po.DictMasterPo;
+import com.woting.exceptionC.Wtcm0301CException;
 import com.woting.exceptionC.Wtcm1000CException;
 
 @Service
@@ -40,7 +41,6 @@ public class DictService {
     /**
      * 加载字典信息
      */
-
     public _CacheDictionary loadCache() {
         _CacheDictionary _cd = new _CacheDictionary();
 
@@ -123,6 +123,19 @@ public class DictService {
                 dModel.dictTree = (TreeNode<DictDetail>)root;
                 //暂不处理错误记录
             }
+        }
+    }
+
+    /**
+     * 新增字典项，加入数据库
+     * @param dd 字典项信息
+     */
+    public void addDictDetail(DictDetail dd) {
+        try {
+            DictDetailPo newDdp = dd.convert2Po();
+            dictDDao.insert(newDdp);
+        } catch(Exception e) {
+            throw new Wtcm0301CException(e);
         }
     }
 }

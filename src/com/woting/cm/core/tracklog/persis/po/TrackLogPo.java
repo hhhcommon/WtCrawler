@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import com.spiritdata.framework.core.model.BaseObject;
 
-public class OperLogPo extends BaseObject {
+public class TrackLogPo extends BaseObject {
     private static final long serialVersionUID = -8955374170572855731L;
 
     private String id; //表ID
