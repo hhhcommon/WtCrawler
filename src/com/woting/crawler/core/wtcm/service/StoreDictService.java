@@ -89,7 +89,7 @@ public class StoreDictService {
                 }
 
                 TrackLog tlog=null;
-                boolean needWriteLog=false;
+                boolean needWriteLog=false, needUpdateCache=false;
                 Map<String, Object> dataLogMap=null;
                 if (findNode!=null) {//如果找到了，不进行添加，看是否需要记录
                     ret=4;
@@ -101,9 +101,15 @@ public class StoreDictService {
                     }
                     tlog=(TrackLog)dataLogMap.get(bizKey);
                     //从数据库中再取一次
-                    if (tlog==null) tlog=trackLogService.getTLogByBizKey("plat_DictD", o, dataMd5);
+                    if (tlog==null) {
+                        tlog=trackLogService.getTLogByBizKey("plat_DictD", o, dataMd5);
+                        needUpdateCache=true;
+                    }
                     if (tlog!=null) {
-                        if (tlog.getDealFlag()!=4) needWriteLog=true;
+                        if (tlog.getDealFlag()!=4) {
+                            needWriteLog=true;
+                            tlog.setDealFlag(4);
+                        }
                         //仅确认(对比),过一周（7天）后再次确认
                         else if (System.currentTimeMillis()-tlog.getCTime().getTime()>24*60*60*1000*7) needWriteLog=true;
                     } else {
@@ -123,15 +129,14 @@ public class StoreDictService {
                     //构造新的TreeNode对象
                     dd=new DictDetail();
                     dd.setId(SequenceUUID.getUUIDSubSegment(4));
-                    dd.setParentId(parentId);
                     dd.setDdName(nodeName);
                     dd.setMId(dictMid);
                     dd.setBCode(dd.getNPy());
                     //插入树
                     TreeNode<DictDetail> ddNode=new TreeNode<DictDetail>(dd);
                     tn.addChild(ddNode);
+                    if (tn.isRoot()) dd.setParentId("0");
 
-                    needWriteLog=true;
                     tlog=new TrackLog();
                     tlog.setTableName("plat_DictD");
                     tlog.setObjId(dd.getId());
@@ -142,15 +147,19 @@ public class StoreDictService {
                     tlog.setOwner(o);
                     tlog.setOper(new Owner(100, "etl"));
                     tlog.setDataClass(dataClass);
+                    needWriteLog=true;
+                    needUpdateCache=true;
                 }
                 if (needWriteLog) {
                     tlog.setId(SequenceUUID.getPureUUID());
+                    trackLogService.insert(tlog);
+                }
+                if (needUpdateCache&&tlog!=null) {
                     if (dataLogMap==null) {
                         dataLogMap=new HashMap<String, Object>();
                         ownerDataLogMap.put(ownerKey, dataLogMap);
                     }
                     dataLogMap.put(bizKey, tlog);
-                    trackLogService.insert(tlog);
                 }
             } //END SYND
 

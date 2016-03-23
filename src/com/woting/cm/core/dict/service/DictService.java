@@ -63,7 +63,18 @@ public class DictService {
             if (_cd.dmList!=null&&_cd.dmList.size()>0) {
                 //Map主对应关系
                 for (DictMaster dm: _cd.dmList) {
-                    _cd.dictModelMap.put(dm.getId(), new DictModel(dm));
+                    DictModel dModel=new DictModel(dm);
+                    DictDetail _t = new DictDetail();
+                    _t.setId(dModel.getId());
+                    _t.setMId(dModel.getId());
+                    _t.setNodeName(dModel.getDmName());
+                    _t.setIsValidate(1);
+                    _t.setParentId(null);
+                    _t.setOrder(1);
+                    _t.setBCode("root");
+                    TreeNode<? extends TreeNodeBean> root = new TreeNode<DictDetail>(_t);
+                    dModel.dictTree = (TreeNode<DictDetail>)root;
+                    _cd.dictModelMap.put(dm.getId(), dModel);
                 }
 
                 //构造单独的字典树
@@ -95,6 +106,7 @@ public class DictService {
                     buildDictTree(templ, _cd);
                 }
             }
+            //处理空树
             return _cd;
         } catch(Exception e) {
             throw new Wtcm1000CException("加载Session中的字典信息", e);
@@ -109,18 +121,8 @@ public class DictService {
         if (ddList.size()>0) {//组成树
             DictModel dModel = cd.dictModelMap.get(ddList.get(0).getMId());
             if (dModel!=null) {
-                DictDetail _t = new DictDetail();
-                _t.setId(dModel.getId());
-                _t.setMId(dModel.getId());
-                _t.setNodeName(dModel.getDmName());
-                _t.setIsValidate(1);
-                _t.setParentId(null);
-                _t.setOrder(1);
-                _t.setBCode("root");
-                TreeNode<? extends TreeNodeBean> root = new TreeNode<DictDetail>(_t);
                 Map<String, Object> m = TreeUtils.convertFromList(ddList);
-                root.setChildren((List<TreeNode<? extends TreeNodeBean>>)m.get("forest"));
-                dModel.dictTree = (TreeNode<DictDetail>)root;
+                dModel.dictTree.setChildren((List<TreeNode<? extends TreeNodeBean>>)m.get("forest"));
                 //暂不处理错误记录
             }
         }

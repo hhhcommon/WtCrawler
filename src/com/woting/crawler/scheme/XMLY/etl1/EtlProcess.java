@@ -48,7 +48,7 @@ public class EtlProcess implements Etl1Process{
             storeDictService.saveDict("3", "-1", o, tempMap);
         }
         //导入关键词
-        String tags=(oneData.get("catalog")+"").toUpperCase().trim();
+        String tags=(oneData.get("tags")+"").toUpperCase().trim();
         String[] _tags=tags.split(",");
         for (String tag: _tags) {
             tempMap=new HashMap<String, Object>();
