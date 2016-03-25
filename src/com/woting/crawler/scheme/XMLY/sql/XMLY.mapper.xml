@@ -70,6 +70,7 @@
       <if test="descript!=null">descript=#{descript,jdbcType=VARCHAR},</if>
       <if test="extInfo!=null">extInfo=#{extInfo,jdbcType=VARCHAR},</if>
       <if test="CTime=null">cTime=#{CTime,jdbcType=TIMESTAMP},</if>
+      <if test="flag!=null and flag!=0">flag=#{flag,jdbcType=INTEGER},</if>
     </set>
     where id=#{id,jdbcType=VARCHAR}
   </update>

@@ -53,6 +53,7 @@ public class StoreDictService {
     public Map<String, Map<String, Object>> getOwnerDataLogMap() {
         return ownerDataLogMap;
     }
+
     /**
      * 保存数据
      * @param dictMid 字典组id
@@ -61,10 +62,10 @@ public class StoreDictService {
      * @param saveData 被保存的数据(源数据)，其中的数据要和DictDetail中的对上（但如下字段系统自动生成Id，Py等
      * @return -1处理异常,0没有处理,1插入,2修改,4仅确认;负数是问题退出:-2没有找到的父节点，无法插入
      */
-    public int saveDict(String dictMid, String parentId, Owner o, Map<String, Object> saveData) {
+    public String saveDict(String dictMid, String parentId, Owner o, Map<String, Object> saveData) {
         try {
             String nodeName=saveData.get("nodeName")+"";
-            if (StringUtils.isNullOrEmptyOrSpace(nodeName)) return -1;
+            if (StringUtils.isNullOrEmptyOrSpace(nodeName)) return "-1";
 
             int dataClass=(dictMid.equals("3")?1:(dictMid.equals("6")?2:0));
             String ownerKey=o.getKey();
@@ -72,17 +73,17 @@ public class StoreDictService {
             String dataMd5=DigestUtils.md5Hex(parentId+nodeName);
 
             DictDetail dd=null;
+            TreeNode<DictDetail> saveNode=null;
             int ret=0;
             synchronized (StoreDictService.lock) {
                 //看是否已经有了
                 DictModel dictM=_cd.getDictModelById(dictMid);
-                TreeNode<DictDetail> findNode=null;
-                TreeNode<? extends TreeNodeBean> tn=((parentId.equals("-1")||parentId==null)?dictM.dictTree.getRoot():dictM.dictTree.findNode(parentId));
-                if (tn==null) return -2;
-                if (tn!=null&&tn.getChildCount()>0) {
-                    for (TreeNode<? extends TreeNodeBean> ctn: tn.getChildren()) {
+                TreeNode<? extends TreeNodeBean> parentNode=((parentId.equals("-1")||parentId==null)?dictM.dictTree.getRoot():dictM.dictTree.findNode(parentId));
+                if (parentNode==null) return "-2";
+                if (parentNode!=null&&parentNode.getChildCount()>0) {
+                    for (TreeNode<? extends TreeNodeBean> ctn: parentNode.getChildren()) {
                         if (ctn!=null&&ctn.getNodeName().equals(nodeName)) {
-                            findNode=(TreeNode<DictDetail>)ctn;
+                            saveNode=(TreeNode<DictDetail>)ctn;
                             break;
                         }
                     }
@@ -91,7 +92,7 @@ public class StoreDictService {
                 TrackLog tlog=null;
                 boolean needWriteLog=false, needUpdateCache=false;
                 Map<String, Object> dataLogMap=null;
-                if (findNode!=null) {//如果找到了，不进行添加，看是否需要记录
+                if (saveNode!=null) {//如果找到了，不进行添加，看是否需要记录
                     ret=4;
                     //看log中是否有对应的记录，若没有加入一条，若有看是否是同一个所属源来的
                     dataLogMap=ownerDataLogMap.get(ownerKey);
@@ -111,12 +112,12 @@ public class StoreDictService {
                             tlog.setDealFlag(4);
                         }
                         //仅确认(对比),过一周（7天）后再次确认
-                        else if (System.currentTimeMillis()-tlog.getCTime().getTime()>24*60*60*1000*7) needWriteLog=true;
+                        else if (tlog.getCTime()!=null&&(System.currentTimeMillis()-tlog.getCTime().getTime()>24*60*60*1000*7)) needWriteLog=true;
                     } else {
                         needWriteLog=true;
                         tlog=new TrackLog();
                         tlog.setTableName("plat_DictD");
-                        tlog.setObjId(findNode.getId());
+                        tlog.setObjId(saveNode.getId());
                         tlog.setData(nodeName);
                         tlog.setDataMd5(dataMd5);
                         tlog.setDealFlag(4);//仅做了对比
@@ -131,11 +132,11 @@ public class StoreDictService {
                     dd.setId(SequenceUUID.getUUIDSubSegment(4));
                     dd.setDdName(nodeName);
                     dd.setMId(dictMid);
-                    dd.setBCode(dd.getNPy());
+                    dd.setBCode(dd.getId());
                     //插入树
-                    TreeNode<DictDetail> ddNode=new TreeNode<DictDetail>(dd);
-                    tn.addChild(ddNode);
-                    if (tn.isRoot()) dd.setParentId("0");
+                    saveNode=new TreeNode<DictDetail>(dd);
+                    parentNode.addChild(saveNode);
+                    if (parentNode.isRoot()) dd.setParentId("0");
 
                     tlog=new TrackLog();
                     tlog.setTableName("plat_DictD");
@@ -169,10 +170,10 @@ public class StoreDictService {
                 dictService.addDictDetail(dd);
                 ret=1;
             }
-            return ret;
+            return ret+"::"+dictMid+"::"+saveNode.getId();
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return -1;
+        return "-1";
     }
 }

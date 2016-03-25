@@ -1,5 +1,6 @@
 package com.woting.crawler.scheme.XMLY.etl1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,9 @@ public class EtlProcess implements Etl1Process{
         //分析喜马拉雅数据，直接加入正式库
         logger.info("{}处理数据::{}", "线程内", oneData.get("assetType")+":"+oneData.get("assetName")+":"+oneData.get("seqName"));
         Map<String, Object> tempMap=null;
+        List<String> dictRefs=new ArrayList<String>();
+        //一、处理字典
+        String retSaveDict;
         //导入分类
         String cataName=(oneData.get("catalog")+"").toUpperCase().trim();
         if (!cataName.equals("null")&&!cataName.equals("")) {
@@ -45,17 +49,22 @@ public class EtlProcess implements Etl1Process{
             cataName=cataName.replace("】", "");
             tempMap=new HashMap<String, Object>();
             tempMap.put("nodeName", cataName);
-            storeDictService.saveDict("3", "-1", o, tempMap);
+            retSaveDict=storeDictService.saveDict("3", "-1", o, tempMap);
+            if (retSaveDict.indexOf("::")!=-1) {
+                dictRefs.add(retSaveDict.substring(retSaveDict.indexOf("::")+2));
+            }
         }
         //导入关键词
-        String tags=(oneData.get("tags")+"").toUpperCase().trim();
-        String[] _tags=tags.split(",");
-        for (String tag: _tags) {
-            tempMap=new HashMap<String, Object>();
-            tempMap.put("nodeName", tag);
-            storeDictService.saveDict("6", "-1", o, tempMap);
+        if (oneData.get("tags")!=null) {
+            String tags=(oneData.get("tags")+"").toUpperCase().trim();
+            String[] _tags=tags.split(",");
+            for (String tag: _tags) {
+                tempMap=new HashMap<String, Object>();
+                tempMap.put("nodeName", tag);
+                storeDictService.saveDict("6", "-1", o, tempMap);
+            }
         }
-        //创建媒体资源
+        //二、处理媒体资产
         //建立关键词与媒体之间的关系
         //建立分类与媒体之间的关系
         //设置这条记录已经被处理过了

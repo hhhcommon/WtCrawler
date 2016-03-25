@@ -49,12 +49,20 @@ public class Etl1Running extends Thread {
         public void run() {
             logger.info("{}启动...", this.getName());
             int i=0;
+            int emptyCount=0;
             while (true) {
                 List<Map<String, Object>> orgiDatas=process.getOrigDataList(config.getQueueSize(), i);
                 if (orgiDatas.isEmpty()) {
                     i=0;
+                    emptyCount++;
+                    try {sleep(100);} catch (InterruptedException e) {};
+                    if (emptyCount>10*60) {
+                        try {sleep(5*60*1000);} catch (InterruptedException e) {};
+                        emptyCount=10*60;
+                    }
                     continue;
                 }
+                emptyCount=0;
                 logger.info("加载第<{}>页原始数据，本页数据<{}>条", i, orgiDatas.size());
                 for (Map<String, Object> oneData: orgiDatas) {
                     try {
@@ -78,7 +86,7 @@ public class Etl1Running extends Thread {
                 Map<String, Object> data=queue.poll();
                 if (data!=null) {
                     process.dealOneData(data);
-                    logger.info("{}处理数据::{}", this.getName(), data.get("assetType")+":"+data.get("assetName")+":"+data.get("seqName"));
+                    logger.info("{},处理数据-{}", this.getName(), data.get("assetType")+":"+data.get("assetName")+":"+data.get("seqName"));
                 }
             }
         }
