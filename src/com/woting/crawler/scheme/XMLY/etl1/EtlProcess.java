@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.woting.cm.core.common.model.Owner;
 import com.woting.crawler.core.etl1.Etl1Process;
+import com.woting.crawler.core.wtcm.service.StoreAssetService;
 import com.woting.crawler.core.wtcm.service.StoreDictService;
 import com.woting.crawler.ext.SpringShell;
 import com.woting.crawler.scheme.XMLY.XmlyService;
@@ -19,13 +20,15 @@ public class EtlProcess implements Etl1Process{
 
     public Object batchLock;//修改batch内容的数据；这个还需要多想一想
     private XmlyService xmlyService; //喜马拉雅服务类
-    private StoreDictService storeDictService; //喜马拉雅服务类
+    private StoreDictService storeDictService; //喜马拉雅-存储字典服务类
+    private StoreAssetService storeAssetService; //喜马拉雅-存储资产服务类
     private Owner o;
 
     @Override
     public void init() {
         xmlyService=(XmlyService)SpringShell.getBean("xmlyService");
         storeDictService=(StoreDictService)SpringShell.getBean("storeDictService");
+        storeAssetService=(StoreAssetService)SpringShell.getBean("storeAssetService");
         o=new Owner(101,"2");//定义为喜马拉雅
     }
 
@@ -37,10 +40,20 @@ public class EtlProcess implements Etl1Process{
     @Override
     public void dealOneData(Map<String, Object> oneData) {
         //分析喜马拉雅数据，直接加入正式库
-        logger.info("{}处理数据::{}", "线程内", oneData.get("assetType")+":"+oneData.get("assetName")+":"+oneData.get("seqName"));
+        logger.info("处理数据::{}", oneData.get("assetType")+":【"+oneData.get("assetId")+"-"+oneData.get("assetName")+"】:【"+oneData.get("seqId")+""+oneData.get("seqName")+"】");
+        //得到资产分类
+        int assetType=0;
+        try {
+            assetType=Integer.parseInt(oneData.get("assetType")+"");
+        } catch(Exception e) {};
+        if (assetType==0) {
+            logger.info("无法获得合法的");
+            return;
+        }
+
         Map<String, Object> tempMap=null;
-        List<String> dictRefs=new ArrayList<String>();
         //一、处理字典
+        List<String> dictRefs=new ArrayList<String>();
         String retSaveDict;
         //导入分类
         String cataName=(oneData.get("catalog")+"").toUpperCase().trim();
@@ -65,9 +78,14 @@ public class EtlProcess implements Etl1Process{
             }
         }
         //二、处理媒体资产
-        //建立关键词与媒体之间的关系
-        //建立分类与媒体之间的关系
-        //设置这条记录已经被处理过了
+        if (assetType==1) {//专辑
+            storeAssetService.saveAsset(oneData);
+        } else if (assetType==2) {//声音
+            storeAssetService.saveSequ(oneData);
+        }
+        //三、资产发布:喜马拉雅自动就发布了
+        
+        //四、设置这条记录已经被处理过了
         tempMap=new HashMap<String, Object>();
         tempMap.put("id", oneData.get("id"));
         tempMap.put("flag", 1);//已经处理

@@ -86,7 +86,6 @@ public class Etl1Running extends Thread {
                 Map<String, Object> data=queue.poll();
                 if (data!=null) {
                     process.dealOneData(data);
-                    logger.info("{},处理数据-{}", this.getName(), data.get("assetType")+":"+data.get("assetName")+":"+data.get("seqName"));
                 }
             }
         }
