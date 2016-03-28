@@ -47,14 +47,6 @@ public class StoreDictService {
     }
 
     /**
-     * 获得字典日志记录
-     * @return 字典日志记录
-     */
-    public Map<String, Map<String, Object>> getOwnerDataLogMap() {
-        return ownerDataLogMap;
-    }
-
-    /**
      * 保存数据
      * @param dictMid 字典组id
      * @param parentId 上级结点Id，若为"-1"则在根加入

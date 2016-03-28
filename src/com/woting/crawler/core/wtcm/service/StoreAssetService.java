@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class StoreAssetService {
 
     public void saveAsset(Map<String, Object> oneData) {
-        //转换为Asset对象
+        //转换为MediaAsset对象
         //一、保存对象
         //检查看是否已经存储过了，lock1
         //1-查看缓存
