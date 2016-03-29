@@ -12,7 +12,7 @@ public class MediaAssetPo extends BaseObject {
     private int maPubType; //发布者记录类型：1-组织表,2-文本
     private String maPubId; //发布者，比如逻辑思维团队
     private String maPublisher; //发布者名称
-    private Timestamp maPublisherTime; //发布时间
+    private Timestamp maPublishTime; //发布时间
     private String maImg; //媒体图Url
     private String maURL; //媒体主地址，可以是聚合的源，也可以是Wt平台中的文件URL
     private String subjectWords; //主题词
@@ -54,11 +54,11 @@ public class MediaAssetPo extends BaseObject {
     public void setMaPublisher(String maPublisher) {
         this.maPublisher=maPublisher;
     }
-    public Timestamp getMaPublisherTime() {
-        return maPublisherTime;
+    public Timestamp getMaPublishTime() {
+        return maPublishTime;
     }
-    public void setMaPublisherTime(Timestamp maPublisherTime) {
-        this.maPublisherTime=maPublisherTime;
+    public void setMaPublishTime(Timestamp maPublishTime) {
+        this.maPublishTime=maPublishTime;
     }
     public String getMaImg() {
         return maImg;

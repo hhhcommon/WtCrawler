@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.woting.cm.core.common.model.Owner;
+import com.woting.cm.core.perimeter.model.Organize;
 import com.woting.crawler.core.etl1.Etl1Process;
 import com.woting.crawler.core.wtcm.service.StoreAssetService;
 import com.woting.crawler.core.wtcm.service.StoreDictService;
@@ -29,6 +30,12 @@ public class EtlProcess implements Etl1Process{
         xmlyService=(XmlyService)SpringShell.getBean("xmlyService");
         storeDictService=(StoreDictService)SpringShell.getBean("storeDictService");
         storeAssetService=(StoreAssetService)SpringShell.getBean("storeAssetService");
+        Organize org=new Organize();
+        org.setId("2");
+        org.setOrgName("喜马拉雅");
+        org.setDescn("喜马拉雅FM");
+        org.setWebPageUrl("http://www.ximalaya.com");
+        storeAssetService.setSrcOrg(org);
         o=new Owner(101,"2");//定义为喜马拉雅
     }
 
@@ -74,16 +81,19 @@ public class EtlProcess implements Etl1Process{
             for (String tag: _tags) {
                 tempMap=new HashMap<String, Object>();
                 tempMap.put("nodeName", tag);
-                storeDictService.saveDict("6", "-1", o, tempMap);
+                retSaveDict=storeDictService.saveDict("6", "-1", o, tempMap);
+                if (retSaveDict.indexOf("::")!=-1) {
+                    dictRefs.add(retSaveDict.substring(retSaveDict.indexOf("::")+2));
+                }
             }
         }
         //二、处理媒体资产
         if (assetType==1) {//专辑
-            storeAssetService.saveAsset(oneData);
+            storeAssetService.saveSequ(oneData, dictRefs);
         } else if (assetType==2) {//声音
-            storeAssetService.saveSequ(oneData);
+            storeAssetService.saveAsset(oneData, dictRefs);
         }
-        //三、资产发布:喜马拉雅自动就发布了
+        //三、资产发布:喜马拉雅自动就发布了，就是发布到分类中
         
         //四、设置这条记录已经被处理过了
         tempMap=new HashMap<String, Object>();

@@ -13,7 +13,7 @@ public class MaSourcePo extends BaseObject {
     private String maSrcId; //当maSrcType=1,来源Id，对应表wt_Organize内容；当maSrcType=2,来源名称
     private String maSource; //来源描述或名称
     private int smType; //来源媒体分类:1-文件;2-直播流
-    private int playURI; //直播流URL
+    private String playURI; //直播流URL
     private int isMain; //是否主播放地址；1是主播放
     private String descn; //说明
     private Timestamp CTime; //记录创建时间
@@ -54,10 +54,10 @@ public class MaSourcePo extends BaseObject {
     public void setSmType(int smType) {
         this.smType = smType;
     }
-    public int getPlayURI() {
+    public String getPlayURI() {
         return playURI;
     }
-    public void setPlayURI(int playURI) {
+    public void setPlayURI(String playURI) {
         this.playURI = playURI;
     }
     public int getIsMain() {

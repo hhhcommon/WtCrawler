@@ -1,6 +1,6 @@
 package com.woting.cm.core.dict.model;
 
-public class RefDict {
+public class DictRefRes {
     private String dmId; //字典组Id
     private String ddId; //字典项Id
     private String ddCode; //字典项编码
@@ -8,6 +8,7 @@ public class RefDict {
     private String dmName; //字典项名称
     private String allName; //全名称
     private Object refObj;  //关联对象
+
     public String getDmId() {
         return dmId;
     }

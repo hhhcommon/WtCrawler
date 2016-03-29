@@ -18,7 +18,7 @@ public class MaSource implements Serializable, ModelSwapPo {
     private String maSrcId; //当maSrcTppe=1,来源Id，对应表wt_Organize内容；当maSrcTppe=2,来源名称
     private String maSource; //来源描述或名称
     private int smType; //来源媒体分类:1-文件;2-直播流
-    private int playURI; //直播流URL
+    private String playURI; //直播流URL
     private int isMain; //是否主播放地址；1是主播放
     private String descn; //说明
     private Timestamp CTime; //记录创建时间
@@ -56,10 +56,10 @@ public class MaSource implements Serializable, ModelSwapPo {
     public void setSmType(int smType) {
         this.smType=smType;
     }
-    public int getPlayURI() {
+    public String getPlayURI() {
         return playURI;
     }
-    public void setPlayURI(int playURI) {
+    public void setPlayURI(String playURI) {
         this.playURI=playURI;
     }
     public int getIsMain() {
@@ -90,12 +90,16 @@ public class MaSource implements Serializable, ModelSwapPo {
         return src;
     }
     public void setSrc(Organize src) {
+        if (src==null) return;
         this.src=src;
         maSrcType=1;
         maSrcId=src.getId();
         maSource=src.getOrgName();
     }
 
+    public boolean isMain() {
+        return isMain==1;
+    }
 
     @Override
     public MaSourcePo convert2Po() {
@@ -135,7 +139,7 @@ public class MaSource implements Serializable, ModelSwapPo {
         this.isMain=_po.getIsMain();
         this.descn=_po.getDescn();
         this.CTime=_po.getCTime();
-        
+
         //对应单体节目——没有办法现在直接处理，先只把值记录下来
         this.ma=new MediaAsset();
         this.ma.setId(_po.getMaId());
@@ -150,5 +154,16 @@ public class MaSource implements Serializable, ModelSwapPo {
             this.maSrcId=_po.getMaSrcId();
             this.maSource=_po.getMaSource();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this==o) return true;
+        if (o==null||!(o instanceof MaSource)) return false;
+
+        MaSource _o=(MaSource)o;
+        if (_o.getId().equals(id)) return true;
+        if (_o.getMa().equals(ma)&&_o.getPlayURI().equals(playURI)&&_o.getMaSrcType()==maSrcType&&_o.getMaSrcId().equals(maSrcId)) return true;
+        return false;
     }
 }
