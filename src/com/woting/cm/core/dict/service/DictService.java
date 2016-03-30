@@ -19,8 +19,10 @@ import com.woting.cm.core.dict.mem._CacheDictionary;
 import com.woting.cm.core.dict.model.DictDetail;
 import com.woting.cm.core.dict.model.DictMaster;
 import com.woting.cm.core.dict.model.DictModel;
+import com.woting.cm.core.dict.model.DictRefRes;
 import com.woting.cm.core.dict.persis.po.DictDetailPo;
 import com.woting.cm.core.dict.persis.po.DictMasterPo;
+import com.woting.cm.core.dict.persis.po.DictRefResPo;
 import com.woting.exceptionC.Wtcm0301CException;
 import com.woting.exceptionC.Wtcm1000CException;
 
@@ -30,11 +32,14 @@ public class DictService {
     private MybatisDAO<DictMasterPo> dictMDao;
     @Resource(name="defaultDAO_CM")
     private MybatisDAO<DictDetailPo> dictDDao;
+    @Resource(name="defaultDAO_CM")
+    private MybatisDAO<DictRefResPo> dictRefDao;
 
     @PostConstruct
     public void initParam() {
-        dictMDao.setNamespace("dMaster");
-        dictDDao.setNamespace("dDetail");
+        dictMDao.setNamespace("A_DMASTER");
+        dictDDao.setNamespace("A_DDETAIL");
+        dictRefDao.setNamespace("A_DREFRES");
     }
 
     //一、以下是字典相关的操作
@@ -136,6 +141,19 @@ public class DictService {
         try {
             DictDetailPo newDdp = dd.convert2Po();
             dictDDao.insert(newDdp);
+        } catch(Exception e) {
+            throw new Wtcm0301CException(e);
+        }
+    }
+
+    /**
+     * 绑定字典与资源的关系
+     * @param dd 字典项信息
+     */
+    public void bindDictRef(DictRefRes drr) {
+        try {
+            DictRefResPo newDrrPo = drr.convert2Po();
+            dictRefDao.insert(newDrrPo);
         } catch(Exception e) {
             throw new Wtcm0301CException(e);
         }

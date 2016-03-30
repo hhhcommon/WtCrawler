@@ -15,7 +15,7 @@ public class MaSource implements Serializable, ModelSwapPo {
 
     private String id; //uuid(主键)
     private int maSrcType; //来源，类型：1-组织表；2-文本
-    private String maSrcId; //当maSrcTppe=1,来源Id，对应表wt_Organize内容；当maSrcTppe=2,来源名称
+    private String maSrcId; //当maSrcType=1,来源Id，对应表wt_Organize内容；当maSrcType=2,来源名称
     private String maSource; //来源描述或名称
     private int smType; //来源媒体分类:1-文件;2-直播流
     private String playURI; //直播流URL

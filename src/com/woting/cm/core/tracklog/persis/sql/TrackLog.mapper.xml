@@ -2,7 +2,7 @@
 
 <!-- 内容资产跟踪日志 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="tLog">
+<mapper namespace="A_TLOG">
   <!-- 跟踪日志 -->
   <resultMap id="tlogMap" type="trackLog">
     <id      column="id"         property="id"         jdbcType="VARCHAR"/>

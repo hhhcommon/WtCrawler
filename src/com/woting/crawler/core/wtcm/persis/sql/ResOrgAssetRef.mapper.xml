@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Etl与资源对应关系 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="C_RESORGASSETREF">
+  <!-- 对应关系 -->
+  <resultMap id="etlLogMap" type="etlLog">
+    <id      column="idxMd5"        property="idxMd5"        jdbcType="VARCHAR"/>
+    <result  column="resTableName"  property="resTableName"  jdbcType="VARCHAR"/>
+    <result  column="resId"         property="resId"         jdbcType="VARCHAR"/>
+    <result  column="refType"       property="refType"       jdbcType="VARCHAR"/>
+    <result  column="orgId"         property="orgId"         jdbcType="VARCHAR"/>
+    <result  column="origType"      property="origType"      jdbcType="VARCHAR"/>
+    <result  column="origId"        property="origId"        jdbcType="VARCHAR"/>
+    <result  column="contentMd5"    property="contentMd5"    jdbcType="VARCHAR"/>
+    <result  column="cTime"         property="CTime"         jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <!-- 获取 对应关系 -->
+  <select id="getExistRef" resultMap="etlLogMap" parameterType="java.lang.String">
+    select * from wt_ResOrgAsset_Ref where idxMd5=#{value,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 新增 对应关系 -->
+  <insert id="insert" parameterType="java.util.Map">
+    insert into wt_ResOrgAsset_Ref
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idxMd5!=null">idxMd5,</if>
+      <if test="resTableName!=null">resTableName,</if>
+      <if test="resId!=null">resId,</if>
+      <if test="refType!=null">refType,</if>
+      <if test="orgId!=null">orgId,</if>
+      <if test="origType!=null">origType,</if>
+      <if test="origId!=null">origId,</if>
+      <if test="contentMd5!=null">contentMd5,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idxMd5!=null">#{idxMd5,jdbcType=VARCHAR},</if>
+      <if test="resTableName!=null">#{resTableName,jdbcType=VARCHAR},</if>
+      <if test="resId!=null">#{resId,jdbcType=VARCHAR},</if>
+      <if test="refType=null">#{refType,jdbcType=VARCHAR},</if>
+      <if test="orgId!=null">#{orgId,jdbcType=VARCHAR},</if>
+      <if test="origType!=null">#{origType,jdbcType=VARCHAR},</if>
+      <if test="origId!=null">#{origId,jdbcType=VARCHAR},</if>
+      <if test="contentMd5!=null">#{contentMd5,jdbcType=VARCHAR},</if>
+    </trim>
+  </insert>
+</mapper>

@@ -4,7 +4,7 @@
   字典组
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dMaster">
+<mapper namespace="A_DMASTER">
   <!-- 对象定义:元数据列模式 -->
   <resultMap id="BaseResultMap" type="dictMaster">
     <id     column="id"         property="id"         jdbcType="VARCHAR"/>

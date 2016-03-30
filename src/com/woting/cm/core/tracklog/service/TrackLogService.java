@@ -21,7 +21,7 @@ public class TrackLogService {
 
     @PostConstruct
     public void initParam() {
-        trackLogDao.setNamespace("tLog");
+        trackLogDao.setNamespace("A_TLOG");
     }
 
     /**

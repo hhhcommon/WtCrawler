@@ -4,7 +4,7 @@
   字典项
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dDetail">
+<mapper namespace="A_DDETAIL">
   <!-- 对象定义:元数据模式 -->
   <resultMap id="BaseResultMap" type="dictDetail">
     <id     column="id"         property="id"         jdbcType="VARCHAR"/>
